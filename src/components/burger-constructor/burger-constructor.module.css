@@ -1,0 +1,27 @@
+.burgerConstructor {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(var(--offset-base-size) * 4);
+  width: calc(50% - var(--offset-base-size) * 5);
+}
+
+.burgerConstructorWrap {
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(var(--offset-base-size) * 4);
+  max-height: 464px; /* 5 items (80px) + 4 gaps (16px) */
+  overflow-y: scroll;
+}
+
+.constructorItem {
+  display: flex;
+  align-items: center;
+  column-gap: calc(var(--offset-base-size) * 2);
+  justify-content: flex-end;
+}
+
+.burgerConstructorTotal {
+  composes: constructorItem;
+  column-gap: calc(var(--offset-base-size) * 10);
+}

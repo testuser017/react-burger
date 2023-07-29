@@ -1,0 +1,11 @@
+.price {
+  display: flex;
+  align-items: center;
+  column-gap: calc(var(--offset-base-size) * 2);
+  justify-content: center;
+}
+
+.size-medium svg {
+  height: 36px;
+  width: 36px;
+}
