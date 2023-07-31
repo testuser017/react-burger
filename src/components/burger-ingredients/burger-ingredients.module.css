@@ -2,6 +2,10 @@
   width: calc(50% - var(--offset-base-size) * 5);
 }
 
+.burgerIngredientsTabs {
+  display: flex;
+}
+
 .burgerIngredientsWrap {
   display: flex;
   flex-direction: column;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './price.module.css';
 
@@ -8,6 +9,11 @@ const Price = ({ priceValue = 0, size = 'default' }) => {
       <CurrencyIcon type="primary" />
     </div>
   );
+};
+
+Price.propTypes = {
+  priceValue: PropTypes.number,
+  size: PropTypes.string,
 };
 
 export default Price;

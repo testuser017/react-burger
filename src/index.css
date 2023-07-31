@@ -1,2 +1,1 @@
-/*DEBUG body * { background: rgba(255,255,255,.1); outline: 1px dotted red; } */
-/*DEBUG*/ body * { outline: 1px dotted #4c4cff; }
+/* DEBUG: body * { outline: 1px dotted rgba(255,0,255,.5); } */

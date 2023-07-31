@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
 
@@ -12,6 +13,13 @@ const AppHeaderNavItem = ({ navItemName, navItemLink, navItemIcon, navItemIsActi
       </a>
     </li>
   );
+};
+
+AppHeaderNavItem.propTypes = {
+  navItemName: PropTypes.string.isRequired,
+  navItemLink: PropTypes.string.isRequired,
+  navItemIcon: PropTypes.elementType.isRequired,
+  navItemIsActive: PropTypes.bool,
 };
 
 const AppHeader = () => {

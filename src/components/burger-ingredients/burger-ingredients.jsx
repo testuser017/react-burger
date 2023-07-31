@@ -1,8 +1,9 @@
-import { Counter, Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Counter, Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import Price from '../price/price';
 import BurgerIngredientsData from '../../utils/data.json';
 import styles from './burger-ingredients.module.css';
-import Price from '../price/price';
 
 const BurgerIngredientsItem = ({ ingredientsItem }) => {
   return (
@@ -13,6 +14,16 @@ const BurgerIngredientsItem = ({ ingredientsItem }) => {
       <Counter count={1} size="default" />
     </li>
   );
+};
+
+const ingredientsItemPropTypes = PropTypes.shape({
+  name: PropTypes.string,
+  price: PropTypes.number,
+  image: PropTypes.string,
+});
+
+BurgerIngredientsItem.propTypes = {
+  ingredientsItem: ingredientsItemPropTypes.isRequired,
 };
 
 const BurgerIngredientsGroup = ({ ingredientsGroupName, ingredientsList }) => {
@@ -28,6 +39,11 @@ const BurgerIngredientsGroup = ({ ingredientsGroupName, ingredientsList }) => {
   );
 };
 
+BurgerIngredientsGroup.propTypes = {
+  ingredientsGroupName: PropTypes.string.isRequired,
+  ingredientsList: PropTypes.arrayOf(ingredientsItemPropTypes).isRequired,
+};
+
 const BurgerIngredients = () => {
   const [current, setCurrent] = useState('one');
 
@@ -35,7 +51,7 @@ const BurgerIngredients = () => {
     <section className={styles.burgerIngredients}>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
 
-      <div style={{ display: 'flex' }}>
+      <div className={styles.burgerIngredientsTabs}>
         <Tab value="one" active={current === 'one'} onClick={setCurrent}>
           Булки
         </Tab>
