@@ -1,0 +1,33 @@
+.burgerConstructor {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(var(--offset-base-size) * 4);
+  width: calc(50% - var(--offset-base-size) * 5);
+}
+
+.burgerConstructorWrap {
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(var(--offset-base-size) * 4);
+  min-height: 80px; /* 1 item (80px) */
+  max-height: 464px; /* 5 items (80px) + 4 gaps (16px) */
+  overflow-y: scroll;
+
+  scroll-snap-type: y mandatory;
+}
+
+.constructorItem {
+  display: flex;
+  align-items: center;
+  column-gap: calc(var(--offset-base-size) * 2);
+
+  scroll-snap-align: start;
+}
+
+.burgerConstructorTotal {
+  display: flex;
+  align-items: center;
+  column-gap: calc(var(--offset-base-size) * 10);
+  justify-content: flex-end;
+}

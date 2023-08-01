@@ -1,0 +1,43 @@
+.burgerIngredients {
+  width: calc(50% - var(--offset-base-size) * 5);
+}
+
+.burgerIngredientsTabs {
+  display: flex;
+}
+
+.burgerIngredientsWrap {
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(var(--offset-base-size) * 10);
+  height: calc(100vh - 364px); /* 364px = height before scroll block (324px) + after (40px) */
+  min-height: 500px;
+  overflow-y: scroll;
+}
+
+.ingredientsList {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: calc(var(--offset-base-size) * 6);
+  row-gap: calc(var(--offset-base-size) * 8);
+  list-style: none;
+  margin: 0;
+}
+
+.ingredientsItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: calc(var(--offset-base-size) * 1);
+  position: relative;
+  width: calc(50% - var(--offset-base-size) * 3);
+}
+
+.ingredientsItemImage {
+  width: calc(100% - var(--offset-base-size) * 8);
+}
+
+.ingredientsItemName {
+  min-height: calc(var(--offset-base-size) * 12);
+  text-align: center;
+}
