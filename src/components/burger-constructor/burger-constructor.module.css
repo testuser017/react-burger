@@ -12,7 +12,7 @@
   row-gap: calc(var(--offset-base-size) * 4);
   min-height: 80px; /* 1 item (80px) */
   max-height: 464px; /* 5 items (80px) + 4 gaps (16px) */
-  overflow-y: scroll;
+  overflow-y: auto;
 
   scroll-snap-type: y mandatory;
 }

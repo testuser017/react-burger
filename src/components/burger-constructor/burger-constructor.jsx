@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
 import { ConstructorElement, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Price from '../price/price';
-import BurgerConstructorData from '../../utils/data.json';
+import { DICTIONARY } from '../../utils/constants';
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructorItem = ({ constructorItem, type }) => {
-  const topBottom = {top: 'верх', bottom: 'низ'};
-  const isLocked = Object.keys(topBottom).includes(type);
+  const isLocked = ['top', 'bottom'].includes(type);
   const text = isLocked
-    ? `${constructorItem.name} (${topBottom[`${type}`]})`
+    ? `${constructorItem.name} (${DICTIONARY[`${type}`]})`
     : constructorItem.name;
 
   return (
@@ -34,28 +33,38 @@ BurgerConstructorItem.propTypes = {
   type: PropTypes.oneOf(['top', 'bottom']),
 };
 
-const BurgerConstructor = () => {
-//const firstBun = BurgerConstructorData.find(el => el.type === 'bun');
-  const getRandomElement = arr => arr[Math.floor(Math.random() * arr.length)];
-  const randomBun = getRandomElement(BurgerConstructorData.filter(el => el.type === 'bun'));
+const BurgerConstructor = ({ data, showModal }) => {
+  const firstBun = data.find(el => el.type === 'bun');
+  let priceTotal = firstBun.price * 2;
 
   return (
     <section className={`${styles.burgerConstructor} pt-25 pl-4`}>
-      <BurgerConstructorItem constructorItem={randomBun} type='top' />
+      <BurgerConstructorItem constructorItem={firstBun} type='top' />
       <section className={`${styles.burgerConstructorWrap} custom-scroll`}>
-        {BurgerConstructorData.filter(el => el.type !== 'bun').map(item => (
-          <BurgerConstructorItem key={item._id} constructorItem={item} />
-        ))}
+        {data.filter(el => el.type !== 'bun').map(item => {
+          priceTotal += item.price;
+          return <BurgerConstructorItem key={item._id} constructorItem={item} />
+        })}
       </section>
-      <BurgerConstructorItem constructorItem={randomBun} type='bottom' />
+      <BurgerConstructorItem constructorItem={firstBun} type='bottom' />
       <div className={`${styles.burgerConstructorTotal} mr-4 mt-10`}>
-        <Price priceValue={610} size="medium" />
-        <Button htmlType="button" type="primary" size="large">
+        <Price priceValue={priceTotal} size="medium" />
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={() => showModal('order')}
+        >
           Оформить заказ
         </Button>
       </div>
     </section>
   );
+};
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  showModal: PropTypes.func,
 };
 
 export default BurgerConstructor;
