@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { ConstructorElement, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Price from '../price/price';
 import { DICTIONARY } from '../../utils/constants';
+import { ingredientType, ingredientsListType } from '../../utils/types';
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructorItem = ({ constructorItem, type }) => {
@@ -25,23 +26,19 @@ const BurgerConstructorItem = ({ constructorItem, type }) => {
 };
 
 BurgerConstructorItem.propTypes = {
-  constructorItem: PropTypes.shape({
-    name: PropTypes.string,
-    price: PropTypes.number,
-    image: PropTypes.string,
-  }).isRequired,
+  constructorItem: ingredientType.isRequired,
   type: PropTypes.oneOf(['top', 'bottom']),
 };
 
-const BurgerConstructor = ({ data, showModal }) => {
-  const firstBun = data.find(el => el.type === 'bun');
+const BurgerConstructor = ({ dataList, showModal }) => {
+  const firstBun = dataList.find(el => el.type === 'bun');
   let priceTotal = firstBun.price * 2;
 
   return (
     <section className={`${styles.burgerConstructor} pt-25 pl-4`}>
       <BurgerConstructorItem constructorItem={firstBun} type='top' />
       <section className={`${styles.burgerConstructorWrap} custom-scroll`}>
-        {data.filter(el => el.type !== 'bun').map(item => {
+        {dataList.filter(el => el.type !== 'bun').map(item => {
           priceTotal += item.price;
           return <BurgerConstructorItem key={item._id} constructorItem={item} />
         })}
@@ -63,7 +60,7 @@ const BurgerConstructor = ({ data, showModal }) => {
 };
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dataList: ingredientsListType.isRequired,
   showModal: PropTypes.func,
 };
 

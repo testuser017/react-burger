@@ -37,7 +37,7 @@ function App() {
   }
 
   const hideModal = () => {
-    setActiveModal(null);
+    setActiveModal('');
   }
 
   return (
@@ -46,20 +46,20 @@ function App() {
       <main className={`${styles.appMain} pl-5 pr-5`}>
         {!!apiData.length &&
           <>
-            <BurgerIngredients data={apiData} showModal={showModal} />
-            <BurgerConstructor data={apiData} showModal={showModal} />
+            <BurgerIngredients dataList={apiData} showModal={showModal} />
+            <BurgerConstructor dataList={apiData} showModal={showModal} />
             {
-              activeModal === 'ingredient' &&
+              activeModal === 'ingredient' && (
               <Modal hideModal={hideModal} modalHeaderText="Детали ингредиента">
-                <IngredientDetails data={modalData} />
+                <IngredientDetails dataItem={modalData} />
               </Modal>
-            }
+            )}
             {
-              activeModal === 'order' &&
+              activeModal === 'order' && (
               <Modal hideModal={hideModal}>
                 <OrderDetails />
               </Modal>
-            }
+            )}
           </>
         }
       </main>

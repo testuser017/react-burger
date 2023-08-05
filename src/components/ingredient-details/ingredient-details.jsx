@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { DICTIONARY } from '../../utils/constants';
+import { ingredientType } from '../../utils/types';
 import styles from './ingredient-details.module.css';
 
 const IngredientPropsItem = ({ propName, propValue }) => (
@@ -14,16 +15,16 @@ IngredientPropsItem.propTypes = {
   propValue: PropTypes.number,
 };
 
-const IngredientDetails = ({ data }) => {
+const IngredientDetails = ({ dataItem }) => {
   const macronutrients = ['calories', 'proteins', 'fat', 'carbohydrates'];
 
   return (
     <div className={`${styles.ingredientDetails} pr-15 pb-5 pl-15`}>
-      <img src={data.image_large} alt={data.name} className={styles.ingredientDetailsImg} />
-      <h3 className="text text_type_main-medium mt-4 mb-8">{data.name}</h3>
+      <img src={dataItem.image_large} alt={dataItem.name} className={styles.ingredientDetailsImg} />
+      <h3 className="text text_type_main-medium mt-4 mb-8">{dataItem.name}</h3>
       <ul className={`${styles.ingredientDetailsProps} text_color_inactive`}>
         {macronutrients.map(item =>
-          <IngredientPropsItem key={item} propName={DICTIONARY[item]} propValue={data[item]} />
+          <IngredientPropsItem key={item} propName={DICTIONARY[item]} propValue={dataItem[item]} />
         )}
       </ul>
     </div>
@@ -31,7 +32,7 @@ const IngredientDetails = ({ data }) => {
 };
 
 IngredientDetails.propTypes = {
-  data: PropTypes.object.isRequired,
+  dataItem: ingredientType.isRequired,
 };
 
 export default IngredientDetails;

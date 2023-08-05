@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Counter, Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Price from '../price/price';
 import { DICTIONARY } from '../../utils/constants';
+import { ingredientType, ingredientsListType } from '../../utils/types';
 import styles from './burger-ingredients.module.css';
 
 const BurgerIngredientsItem = ({ ingredientsItem, showModal }) => {
@@ -19,14 +20,8 @@ const BurgerIngredientsItem = ({ ingredientsItem, showModal }) => {
   );
 };
 
-const ingredientsItemPropTypes = PropTypes.shape({
-  name: PropTypes.string,
-  price: PropTypes.number,
-  image: PropTypes.string,
-});
-
 BurgerIngredientsItem.propTypes = {
-  ingredientsItem: ingredientsItemPropTypes.isRequired,
+  ingredientsItem: ingredientType.isRequired,
   showModal: PropTypes.func,
 };
 
@@ -45,11 +40,11 @@ const BurgerIngredientsGroup = ({ ingredientsGroupName, ingredientsList, showMod
 
 BurgerIngredientsGroup.propTypes = {
   ingredientsGroupName: PropTypes.string.isRequired,
-  ingredientsList: PropTypes.arrayOf(ingredientsItemPropTypes).isRequired,
+  ingredientsList: ingredientsListType.isRequired,
   showModal: PropTypes.func,
 };
 
-const BurgerIngredients = ({ data, showModal }) => {
+const BurgerIngredients = ({ dataList, showModal }) => {
   const groups = ['bun', 'sauce', 'main'];
   const [current, setCurrent] = useState(groups[0]);
 
@@ -77,7 +72,7 @@ const BurgerIngredients = ({ data, showModal }) => {
           <BurgerIngredientsGroup
             key={item}
             ingredientsGroupName={DICTIONARY[item]}
-            ingredientsList={data.filter(el => el.type === item)}
+            ingredientsList={dataList.filter(el => el.type === item)}
             showModal={showModal}
           />
         ))}
@@ -87,7 +82,7 @@ const BurgerIngredients = ({ data, showModal }) => {
 };
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dataList: ingredientsListType.isRequired,
   showModal: PropTypes.func,
 };
 
