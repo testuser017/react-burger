@@ -12,7 +12,7 @@
   row-gap: calc(var(--offset-base-size) * 10);
   height: calc(100vh - 364px); /* 364px = height before scroll block (324px) + after (40px) */
   min-height: 500px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .ingredientsList {
@@ -26,6 +26,7 @@
 
 .ingredientsItem {
   display: flex;
+  cursor: pointer;
   flex-direction: column;
   align-items: center;
   row-gap: calc(var(--offset-base-size) * 1);

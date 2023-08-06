@@ -2,12 +2,16 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Counter, Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Price from '../price/price';
-import BurgerIngredientsData from '../../utils/data.json';
+import { DICTIONARY } from '../../utils/constants';
+import { ingredientType, ingredientsListType } from '../../utils/types';
 import styles from './burger-ingredients.module.css';
 
-const BurgerIngredientsItem = ({ ingredientsItem }) => {
+const BurgerIngredientsItem = ({ ingredientsItem, showModal }) => {
   return (
-    <li className={styles.ingredientsItem}>
+    <li
+      className={styles.ingredientsItem}
+      onClick={() => window.getSelection().toString() === '' && showModal('ingredient', ingredientsItem)}
+    >
       <img src={ingredientsItem.image} alt={ingredientsItem.name} className={styles.ingredientsItemImage} />
       <Price priceValue={ingredientsItem.price} />
       <h3 className={`${styles.ingredientsItemName} text text_type_main-default`}>{ingredientsItem.name}</h3>
@@ -16,23 +20,18 @@ const BurgerIngredientsItem = ({ ingredientsItem }) => {
   );
 };
 
-const ingredientsItemPropTypes = PropTypes.shape({
-  name: PropTypes.string,
-  price: PropTypes.number,
-  image: PropTypes.string,
-});
-
 BurgerIngredientsItem.propTypes = {
-  ingredientsItem: ingredientsItemPropTypes.isRequired,
+  ingredientsItem: ingredientType.isRequired,
+  showModal: PropTypes.func,
 };
 
-const BurgerIngredientsGroup = ({ ingredientsGroupName, ingredientsList }) => {
+const BurgerIngredientsGroup = ({ ingredientsGroupName, ingredientsList, showModal }) => {
   return (
     <section>
       <h2 className="text text_type_main-medium mb-6">{ingredientsGroupName}</h2>
       <ul className={`${styles.ingredientsList} pr-4 pl-4`}>
         {ingredientsList.map(item => (
-          <BurgerIngredientsItem key={item._id} ingredientsItem={item} />
+          <BurgerIngredientsItem key={item._id} ingredientsItem={item} showModal={showModal} />
         ))}
       </ul>
     </section>
@@ -41,35 +40,50 @@ const BurgerIngredientsGroup = ({ ingredientsGroupName, ingredientsList }) => {
 
 BurgerIngredientsGroup.propTypes = {
   ingredientsGroupName: PropTypes.string.isRequired,
-  ingredientsList: PropTypes.arrayOf(ingredientsItemPropTypes).isRequired,
+  ingredientsList: ingredientsListType.isRequired,
+  showModal: PropTypes.func,
 };
 
-const BurgerIngredients = () => {
-  const [current, setCurrent] = useState('one');
+const BurgerIngredients = ({ dataList, showModal }) => {
+  const groups = ['bun', 'sauce', 'main'];
+  const [current, setCurrent] = useState(groups[0]);
+
+// TODO: Tab onClick -> scroll to block
 
   return (
     <section className={styles.burgerIngredients}>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
 
       <div className={styles.burgerIngredientsTabs}>
-        <Tab value="one" active={current === 'one'} onClick={setCurrent}>
-          Булки
-        </Tab>
-        <Tab value="two" active={current === 'two'} onClick={setCurrent}>
-          Соусы
-        </Tab>
-        <Tab value="three" active={current === 'three'} onClick={setCurrent}>
-          Начинки
-        </Tab>
+        {groups.map(item => (
+          <Tab
+            key={item}
+            value={item}
+            active={current === item}
+            onClick={setCurrent}
+          >
+            {DICTIONARY[item]}
+          </Tab>
+        ))}
       </div>
 
       <div className={`${styles.burgerIngredientsWrap} mt-10 custom-scroll`}>
-        <BurgerIngredientsGroup ingredientsGroupName="Булки" ingredientsList={BurgerIngredientsData.filter(el => el.type === 'bun')} />
-        <BurgerIngredientsGroup ingredientsGroupName="Соусы" ingredientsList={BurgerIngredientsData.filter(el => el.type === 'sauce')} />
-        <BurgerIngredientsGroup ingredientsGroupName="Начинки" ingredientsList={BurgerIngredientsData.filter(el => el.type === 'main')} />
+        {groups.map(item => (
+          <BurgerIngredientsGroup
+            key={item}
+            ingredientsGroupName={DICTIONARY[item]}
+            ingredientsList={dataList.filter(el => el.type === item)}
+            showModal={showModal}
+          />
+        ))}
       </div>
     </section>
   );
+};
+
+BurgerIngredients.propTypes = {
+  dataList: ingredientsListType.isRequired,
+  showModal: PropTypes.func,
 };
 
 export default BurgerIngredients;
