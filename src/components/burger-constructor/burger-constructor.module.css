@@ -25,9 +25,33 @@
   scroll-snap-align: start;
 }
 
+.constructorItemDndDragging {
+  opacity: 0.2;
+}
+
 .burgerConstructorTotal {
   display: flex;
   align-items: center;
   column-gap: calc(var(--offset-base-size) * 10);
   justify-content: flex-end;
+}
+
+.burgerConstructorDndHover {
+  background-image:
+    linear-gradient(90deg, #4c4cff 50%, transparent 50%),
+    linear-gradient(90deg, #4c4cff 50%, transparent 50%),
+    linear-gradient(0, #4c4cff 50%, transparent 50%),
+    linear-gradient(0, #4c4cff 50%, transparent 50%);
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  background-size: 50px 10px, 50px 10px, 10px 50px, 10px 50px;
+  animation: moving-border 400ms infinite linear;
+}
+
+@keyframes moving-border {
+  0% {
+    background-position: 0 0, 50px 100%, 0 50px, 100% 0;
+  }
+  100% {
+    background-position: 50px 0, 0 100%, 0 0, 100% 50px;
+  }
 }
