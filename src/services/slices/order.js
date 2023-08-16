@@ -24,7 +24,7 @@ export const orderRequest = createAsyncThunk('order/orderRequest', async (ingred
     return await res.json();
   } catch(error) {
     console.log(error);
-    return rejectWithValue();
+    return rejectWithValue(error);
   };
 });
 

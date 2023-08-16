@@ -17,18 +17,6 @@
   scroll-snap-type: y mandatory;
 }
 
-.constructorItem {
-  display: flex;
-  align-items: center;
-  column-gap: calc(var(--offset-base-size) * 2);
-
-  scroll-snap-align: start;
-}
-
-.constructorItemDndDragging {
-  opacity: 0.2;
-}
-
 .burgerConstructorTotal {
   display: flex;
   align-items: center;

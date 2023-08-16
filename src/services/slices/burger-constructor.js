@@ -9,19 +9,24 @@ export const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
   initialState,
   reducers: {
-    addIngredient(state, action) {
-      const item = { ...action.payload, uuid: crypto.randomUUID() };
-      if(item.type === 'bun') {
-        state.bun = item;
-      } else {
-        state.filling.push(item);
-      }
+    // https://redux-toolkit.js.org/api/createslice#customizing-generated-action-creators
+    addIngredient: {
+      reducer: (state, action) => {
+        if(action.payload.type === 'bun') {
+          state.bun = action.payload;
+        } else {
+          state.filling.push(action.payload);
+        }
+      },
+      prepare: item => ({
+        payload: { ...item, uuid: crypto.randomUUID() }
+      }),
     },
     delIngredient(state, action) {
       state.filling = state.filling.filter(item => item.uuid !== action.payload);
     },
     moveIngredient(state, action) {
-      const {dragIndex, hoverIndex} = action.payload;
+      const { dragIndex, hoverIndex } = action.payload;
       state.filling.splice(dragIndex, 0, state.filling.splice(hoverIndex, 1)[0]);
     },
     emptyConstructor: () => initialState

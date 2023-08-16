@@ -16,7 +16,7 @@ export const getApiData = createAsyncThunk('burgerIngredients/getApiData', async
     return await res.json();
   } catch(error) {
     console.log(error);
-    return rejectWithValue();
+    return rejectWithValue(error);
   };
 });
 
