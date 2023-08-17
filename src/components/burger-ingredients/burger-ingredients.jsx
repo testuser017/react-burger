@@ -1,89 +1,96 @@
-import { useState } from 'react';
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Counter, Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import Price from '../price/price';
+import { ingredientsListType } from '../../utils/types';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
+import { getApiData } from '../../services/slices/burger-ingredients';
 import { DICTIONARY } from '../../utils/constants';
-import { ingredientType, ingredientsListType } from '../../utils/types';
 import styles from './burger-ingredients.module.css';
 
-const BurgerIngredientsItem = ({ ingredientsItem, showModal }) => {
+const BurgerIngredientsGroup = forwardRef((props, ref) => {
+  const { ingredientsGroupName, ingredientsList } = props;
   return (
-    <li
-      className={styles.ingredientsItem}
-      onClick={() => window.getSelection().toString() === '' && showModal('ingredient', ingredientsItem)}
-    >
-      <img src={ingredientsItem.image} alt={ingredientsItem.name} className={styles.ingredientsItemImage} />
-      <Price priceValue={ingredientsItem.price} />
-      <h3 className={`${styles.ingredientsItemName} text text_type_main-default`}>{ingredientsItem.name}</h3>
-      <Counter count={1} size="default" />
-    </li>
-  );
-};
-
-BurgerIngredientsItem.propTypes = {
-  ingredientsItem: ingredientType.isRequired,
-  showModal: PropTypes.func,
-};
-
-const BurgerIngredientsGroup = ({ ingredientsGroupName, ingredientsList, showModal }) => {
-  return (
-    <section>
+    <section ref={ref}>
       <h2 className="text text_type_main-medium mb-6">{ingredientsGroupName}</h2>
       <ul className={`${styles.ingredientsList} pr-4 pl-4`}>
         {ingredientsList.map(item => (
-          <BurgerIngredientsItem key={item._id} ingredientsItem={item} showModal={showModal} />
+          <BurgerIngredientsItem key={item._id} ingredientsItem={item} />
         ))}
       </ul>
     </section>
   );
-};
+});
 
 BurgerIngredientsGroup.propTypes = {
   ingredientsGroupName: PropTypes.string.isRequired,
   ingredientsList: ingredientsListType.isRequired,
-  showModal: PropTypes.func,
 };
 
-const BurgerIngredients = ({ dataList, showModal }) => {
-  const groups = ['bun', 'sauce', 'main'];
-  const [current, setCurrent] = useState(groups[0]);
+const BurgerIngredients = () => {
+  const dispatch = useDispatch();
+  const apiDataStatus = useSelector(state => state.burgerIngredients.status);
+  const dataList = useSelector(state => state.burgerIngredients.data);
 
-// TODO: Tab onClick -> scroll to block
+  const ingredientsTypes = useMemo(
+    () => [...new Set(dataList.map(x => x.type))],
+    [dataList]
+  );
+  const [currentTab, setCurrentTab] = useState(ingredientsTypes[0]);
+  useEffect(() => {
+    setCurrentTab(ingredientsTypes[0]);
+  }, [ingredientsTypes]);
+
+  const scrollBlockRef = useRef(null);
+  const ingredientsGroupsRefs = useRef({});
+
+  const scrollHandler = () => {
+    const scrollBlockY = scrollBlockRef.current.getBoundingClientRect().y;
+    const groupsYDiffs = ingredientsTypes.map(typeName => Math.abs(ingredientsGroupsRefs.current[typeName].getBoundingClientRect().y - scrollBlockY));
+    const minDiffIndex = groupsYDiffs.indexOf(Math.min(...groupsYDiffs));
+    const closestGroup = ingredientsTypes[minDiffIndex];
+    setCurrentTab(closestGroup);
+  };
+
+  const tabClickHandler = (typeName) => {
+    ingredientsGroupsRefs.current[typeName].scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    if (apiDataStatus === 'idle') {
+      dispatch(getApiData());
+    }
+  }, [apiDataStatus, dispatch]);
 
   return (
     <section className={styles.burgerIngredients}>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
 
       <div className={styles.burgerIngredientsTabs}>
-        {groups.map(item => (
+        {ingredientsTypes.map(item => (
           <Tab
             key={item}
             value={item}
-            active={current === item}
-            onClick={setCurrent}
+            active={currentTab === item}
+            onClick={tabClickHandler}
           >
-            {DICTIONARY[item]}
+            {DICTIONARY[item] ?? item}
           </Tab>
         ))}
       </div>
 
-      <div className={`${styles.burgerIngredientsWrap} mt-10 custom-scroll`}>
-        {groups.map(item => (
+      <div className={`${styles.burgerIngredientsWrap} mt-10 custom-scroll`} ref={scrollBlockRef} onScroll={scrollHandler}>
+        {ingredientsTypes.map(item => (
           <BurgerIngredientsGroup
             key={item}
-            ingredientsGroupName={DICTIONARY[item]}
+            ingredientsGroupName={DICTIONARY[item] ?? item}
             ingredientsList={dataList.filter(el => el.type === item)}
-            showModal={showModal}
+            ref={el => ingredientsGroupsRefs.current[item] = el}
           />
         ))}
       </div>
     </section>
   );
-};
-
-BurgerIngredients.propTypes = {
-  dataList: ingredientsListType.isRequired,
-  showModal: PropTypes.func,
 };
 
 export default BurgerIngredients;

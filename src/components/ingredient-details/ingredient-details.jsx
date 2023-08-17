@@ -1,6 +1,6 @@
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { DICTIONARY } from '../../utils/constants';
-import { ingredientType } from '../../utils/types';
 import styles from './ingredient-details.module.css';
 
 const IngredientPropsItem = ({ propName, propValue }) => (
@@ -15,7 +15,8 @@ IngredientPropsItem.propTypes = {
   propValue: PropTypes.number,
 };
 
-const IngredientDetails = ({ dataItem }) => {
+const IngredientDetails = () => {
+  const dataItem = useSelector(state => state.ingredientDetails.data);
   const macronutrients = ['calories', 'proteins', 'fat', 'carbohydrates'];
 
   return (
@@ -29,10 +30,6 @@ const IngredientDetails = ({ dataItem }) => {
       </ul>
     </div>
   );
-};
-
-IngredientDetails.propTypes = {
-  dataItem: ingredientType.isRequired,
 };
 
 export default IngredientDetails;

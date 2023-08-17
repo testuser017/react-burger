@@ -1,0 +1,18 @@
+.ingredientsItem {
+  display: flex;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  row-gap: calc(var(--offset-base-size) * 1);
+  position: relative;
+  width: calc(50% - var(--offset-base-size) * 3);
+}
+
+.ingredientsItemImage {
+  width: calc(100% - var(--offset-base-size) * 8);
+}
+
+.ingredientsItemName {
+  min-height: calc(var(--offset-base-size) * 12);
+  text-align: center;
+}
