@@ -1,0 +1,40 @@
+.profile {
+  box-sizing: border-box;
+  display: flex;
+  column-gap: calc(var(--offset-base-size) * 15);
+  margin: calc(var(--offset-base-size) * 30) auto 0;
+  max-width: 1280px;
+}
+
+.profileSidebar {
+  width: 320px;
+}
+
+.profileMenu {
+  list-style: none;
+}
+
+.profileMenuLink {
+  color: var(--text-inactive-color);
+  display: block;
+  height: 64px;
+  line-height: 64px;
+}
+
+.profileMenuLinkActive {
+  composes: profileMenuLink;
+  color: var(--text-primary-color);
+}
+
+.profileMenuButton {
+  composes: profileMenuLink;
+  font-size: 24px;
+  font-weight: 700;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.profileForm {
+  text-align: right;
+}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -9,12 +10,15 @@ import BurgerConstructorItem from '../burger-constructor-item/burger-constructor
 import Price from '../price/price';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
+import { LOGIN_URL } from '../../utils/constants';
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const [showOrderModal, setShowOrderModal] = useState(false);
 
+  const navigate = useNavigate();
+  const user = useSelector((store) => store.user.user);
   const bun = useSelector(state => state.burgerConstructor.bun);
   const filling = useSelector(state => state.burgerConstructor.filling);
   const price = useSelector(burgerConstructorTotalPrice);
@@ -30,12 +34,16 @@ const BurgerConstructor = () => {
   });
 
   const handleOrder = () => {
-    dispatch(orderRequest([
-      bun._id,
-      ...filling.map(item => item._id),
-      bun._id,
-    ]));
-    setShowOrderModal(true);
+    if(user) {
+      dispatch(orderRequest([
+        bun._id,
+        ...filling.map(item => item._id),
+        bun._id,
+      ]));
+      setShowOrderModal(true);
+    } else {
+      navigate(LOGIN_URL);
+    }
   };
 
   const hideModal = () => {

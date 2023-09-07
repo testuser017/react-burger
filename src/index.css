@@ -1,1 +1,14 @@
-/* DEBUG body * { outline: 1px dotted rgba(255,0,255,.5); } */
+/**
+ * DEBUG
+ body * { outline: 1px dotted rgba(255,0,255,.5); }
+ */
+
+a {
+  text-decoration: none;
+}
+
+.formWrapper {
+  margin: calc(var(--offset-base-size) * 45) auto 0;
+  text-align: center;
+  width: 480px;
+}

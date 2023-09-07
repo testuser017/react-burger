@@ -52,6 +52,8 @@ const BurgerConstructorItem = ({ constructorItem, type, index }) => {
   });
   dragRef(dropRef(ref));
 
+  const handleClose = () => dispatch(delIngredient(constructorItem.uuid));
+
   return (
     <div className={`${styles.constructorItem} ${isDragging && styles.constructorItemDndDragging} ${isLocked && 'ml-8'}`} ref={ref}>
       {!isLocked && <DragIcon type="primary" />}
@@ -61,7 +63,7 @@ const BurgerConstructorItem = ({ constructorItem, type, index }) => {
         thumbnail={constructorItem.image}
         type={type}
         isLocked={isLocked}
-        handleClose={() => dispatch(delIngredient(constructorItem.uuid))}
+        handleClose={handleClose}
       />
     </div>
   );

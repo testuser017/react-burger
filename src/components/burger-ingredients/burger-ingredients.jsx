@@ -1,10 +1,9 @@
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ingredientsListType } from '../../utils/types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
-import { getApiData } from '../../services/slices/burger-ingredients';
 import { DICTIONARY } from '../../utils/constants';
 import styles from './burger-ingredients.module.css';
 
@@ -28,8 +27,6 @@ BurgerIngredientsGroup.propTypes = {
 };
 
 const BurgerIngredients = () => {
-  const dispatch = useDispatch();
-  const apiDataStatus = useSelector(state => state.burgerIngredients.status);
   const dataList = useSelector(state => state.burgerIngredients.data);
 
   const ingredientsTypes = useMemo(
@@ -55,12 +52,6 @@ const BurgerIngredients = () => {
   const tabClickHandler = (typeName) => {
     ingredientsGroupsRefs.current[typeName].scrollIntoView({ behavior: 'smooth' });
   };
-
-  useEffect(() => {
-    if (apiDataStatus === 'idle') {
-      dispatch(getApiData());
-    }
-  }, [apiDataStatus, dispatch]);
 
   return (
     <section className={styles.burgerIngredients}>
