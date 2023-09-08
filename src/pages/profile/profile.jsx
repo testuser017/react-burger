@@ -36,6 +36,8 @@ const ProfilePage = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+//  dispatch(updateUser( Object.fromEntries(new FormData(e.target)) ));
+//  dispatch(updateUser(values));
     dispatch(updateUser({
       name: values.name,
       email: values.email,

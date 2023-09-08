@@ -1,22 +1,26 @@
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Button,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import useFormAndValidation from '../hooks/useFormAndValidation';
 import { forgotPassword } from '../services/slices/user';
-import { LOGIN_URL } from '../utils/constants';
+import { LOGIN_URL, RESET_PASSWORD_URL } from '../utils/constants';
 
 const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { values, handleChange, errors, isValid } = useFormAndValidation();
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    dispatch(forgotPassword({
-      email: values.email,
-    }));
+    dispatch(forgotPassword(
+      {
+        email: values.email
+      },
+      () => navigate(RESET_PASSWORD_URL)
+    ));
   };
 
   return (

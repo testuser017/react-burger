@@ -1,5 +1,6 @@
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Button,
   Input,
@@ -7,18 +8,27 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import useFormAndValidation from '../hooks/useFormAndValidation';
 import { resetPassword } from '../services/slices/user';
-import { LOGIN_URL } from '../utils/constants';
+import { FORGOT_PASSWORD_URL, LOGIN_URL } from '../utils/constants';
 
 const ResetPasswordPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { values, handleChange, errors, isValid } = useFormAndValidation();
+  const isResetEmailSent = useSelector((store) => store.user.isResetEmailSent);
+
+  useEffect(() => {
+    !isResetEmailSent && navigate(FORGOT_PASSWORD_URL);
+  }, []);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    dispatch(resetPassword({
-      password: values.password,
-      token: values.token,
-    }));
+    dispatch(resetPassword(
+      {
+        password: values.password,
+        token: values.token,
+      },
+      () => navigate(LOGIN_URL)
+    ));
   };
 
   return (

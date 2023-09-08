@@ -41,18 +41,20 @@ export const logout = () => {
   };
 };
 
-export const forgotPassword = (data) => {
+export const forgotPassword = (data, cb) => {
   return (dispatch) => {
     return userApi.forgotPassword(data).then((res) => {
-      dispatch(setResetEmailSent(true)); // TODO
+      dispatch(setResetEmailSent(true));
+      cb(); // navigate(RESET_PASSWORD_URL)
     });
   };
 };
 
-export const resetPassword = (data) => {
+export const resetPassword = (data, cb) => {
   return (dispatch) => {
     return userApi.resetPassword(data).then((res) => {
-      dispatch(setResetEmailSent(false)); // TODO
+      dispatch(setResetEmailSent(false));
+      cb(); // navigate(LOGIN_URL)
     });
   };
 };
