@@ -27,16 +27,15 @@
   margin: 0 0 0 auto;
 }
 
+.navLink {
+  border-radius: 40px;
+  display: flex;
+}
+
 .logo {
   line-height: 0;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.navLink {
-  border-radius: 40px;
-  display: flex;
-  text-decoration: none;
 }

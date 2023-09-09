@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { API_URL_ORDERS } from '../../utils/constants';
 
 const initialState = {
@@ -21,7 +21,7 @@ export const orderRequest = createAsyncThunk('order/orderRequest', async (ingred
     if(!res.ok) {
       throw Error(res.statusText);
     }
-    return await res.json();
+    return await res.json(); // await ??
   } catch(error) {
     console.log(error);
     return rejectWithValue(error);
