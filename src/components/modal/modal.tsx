@@ -1,16 +1,20 @@
-import { useEffect } from 'react';
+import { FC, PropsWithChildren, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import PropTypes from 'prop-types';
 import { Button, CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import styles from './modal.module.css';
 
-const modalRoot = document.getElementById("react-modals");
+const modalRoot = document.getElementById("react-modals") as HTMLElement;
 
-const Modal = ({ modalHeaderText = '', hideModal, children }) => {
+type Props = {
+  hideModal: () => void;
+  modalHeaderText?: string;
+};
+
+const Modal: FC<PropsWithChildren<Props>> = ({ modalHeaderText = '', hideModal, children }) => {
 
   useEffect(() => {
-    const keyPressHandler = (event) => {
+    const keyPressHandler = (event: KeyboardEvent) => {
       if(event.key === 'Escape') {
         hideModal();
       }
@@ -19,7 +23,8 @@ const Modal = ({ modalHeaderText = '', hideModal, children }) => {
     return () => {
       document.removeEventListener('keydown', keyPressHandler);
     }
-  }, [])
+  // eslint-disable-next-line
+  }, []);
 
   return createPortal(
     (
@@ -42,12 +47,6 @@ const Modal = ({ modalHeaderText = '', hideModal, children }) => {
     ),
     modalRoot
   )
-};
-
-Modal.propTypes = {
-  modalHeaderText: PropTypes.string,
-  hideModal: PropTypes.func.isRequired,
-  children: PropTypes.node,
 };
 
 export default Modal;

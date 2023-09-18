@@ -1,8 +1,9 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/store-hooks';
+import { getIngredientsData } from '../../services/slices/burger-ingredients';
 import styles from './not-found-404.module.css';
 
 const NotFound404Page = () => {
-  const ingredients = useSelector(state => state.burgerIngredients.data);
+  const ingredients = useAppSelector(getIngredientsData);
   const imgs = ingredients.map(el => el.image).sort(() => 0.5 - Math.random()).slice(0, 9);
 
   return (

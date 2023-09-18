@@ -1,20 +1,18 @@
-import { useDispatch } from 'react-redux';
+import { FormEvent } from 'react';
+import { useAppDispatch } from '../hooks/store-hooks';
 import { Link } from 'react-router-dom';
-import {
-  Button,
-  EmailInput,
-  Input,
-  PasswordInput,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import { EmailInputMod } from '../components/mod-inputs/email-input-mod';
+import { PasswordInputMod } from '../components/mod-inputs/password-input-mod';
 import useFormAndValidation from '../hooks/useFormAndValidation';
 import { register } from '../services/slices/user';
 import { LOGIN_URL } from '../utils/constants';
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { values, handleChange, errors, isValid } = useFormAndValidation();
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(register({
       name: values.name,
@@ -28,26 +26,26 @@ const RegisterPage = () => {
       <h1 className='text text_type_main-medium'>Регистрация</h1>
       <form onSubmit={handleFormSubmit}>
         <Input
-          extraClass={'mt-6'}
-          placeholder={'Имя'}
-          name={'name'}
+          extraClass='mt-6'
+          placeholder='Имя'
+          name='name'
           value={values.name ?? ''}
           onChange={handleChange}
           error={!!errors.name}
           required={true}
           autoFocus
         />
-        <EmailInput
-          extraClass={'mt-6'}
-          name={'email'}
+        <EmailInputMod
+          extraClass='mt-6'
+          name='email'
           value={values.email ?? ''}
           onChange={handleChange}
           error={!!errors.email}
           required={true}
         />
-        <PasswordInput
-          extraClass={'mt-6'}
-          name={'password'}
+        <PasswordInputMod
+          extraClass='mt-6'
+          name='password'
           value={values.password ?? ''}
           onChange={handleChange}
           error={!!errors.password}

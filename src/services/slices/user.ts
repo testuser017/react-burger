@@ -1,17 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { userApi } from '../../utils/user-api';
+import { API } from '../../utils/api';
+import { RootState } from '../store';
+import { useAppDispatch } from '../../hooks/store-hooks';
+import { TForgotPassword, TResetPassword, TUser } from '../../utils/types';
 
 export const getUser = () => {
-  return (dispatch) => {
-    return userApi.getUser().then((res) => {
+  return (dispatch = useAppDispatch()) => {
+    return API.getUser().then((res) => {
       dispatch(setUser(res.user));
     });
   };
 };
 
-export const register = (data) => {
-  return (dispatch) => {
-    return userApi.register(data).then((res) => {
+export const register = (data: TUser) => {
+  return (dispatch = useAppDispatch()) => {
+    return API.register(data).then((res) => {
       localStorage.setItem('accessToken', res.accessToken);
       localStorage.setItem('refreshToken', res.refreshToken);
       dispatch(setUser(res.user));
@@ -20,9 +23,9 @@ export const register = (data) => {
   };
 };
 
-export const login = (data) => {
-  return (dispatch) => {
-    return userApi.login(data).then((res) => {
+export const login = (data: TUser) => {
+  return (dispatch = useAppDispatch()) => {
+    return API.login(data).then((res) => {
       localStorage.setItem('accessToken', res.accessToken);
       localStorage.setItem('refreshToken', res.refreshToken);
       dispatch(setUser(res.user));
@@ -32,8 +35,8 @@ export const login = (data) => {
 };
 
 export const logout = () => {
-  return (dispatch) => {
-    return userApi.logout().then(() => {
+  return (dispatch = useAppDispatch()) => {
+    return API.logout().then(() => {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       dispatch(setUser(null));
@@ -41,34 +44,34 @@ export const logout = () => {
   };
 };
 
-export const forgotPassword = (data, cb) => {
-  return (dispatch) => {
-    return userApi.forgotPassword(data).then((res) => {
+export const forgotPassword = (data: TForgotPassword, cb: () => void) => {
+  return (dispatch = useAppDispatch()) => {
+    return API.forgotPassword(data).then(() => {
       dispatch(setResetEmailSent(true));
       cb(); // navigate(RESET_PASSWORD_URL)
     });
   };
 };
 
-export const resetPassword = (data, cb) => {
-  return (dispatch) => {
-    return userApi.resetPassword(data).then((res) => {
+export const resetPassword = (data: TResetPassword, cb: () => void) => {
+  return (dispatch = useAppDispatch()) => {
+    return API.resetPassword(data).then(() => {
       dispatch(setResetEmailSent(false));
       cb(); // navigate(LOGIN_URL)
     });
   };
 };
 
-export const updateUser = (data) => {
-  return (dispatch) => {
-    return userApi.updateUser(data).then((res) => {
+export const updateUser = (data: TUser) => {
+  return (dispatch = useAppDispatch()) => {
+    return API.updateUser(data).then((res) => {
       dispatch(setUser(res.user));
     });
   };
 };
 
 export const checkUserAuth = () => {
-  return (dispatch) => {
+  return (dispatch = useAppDispatch()) => {
     if (localStorage.getItem('accessToken')) {
       dispatch(getUser())
         .catch(() => {
@@ -83,7 +86,13 @@ export const checkUserAuth = () => {
   };
 };
 
-const initialState = {
+type TUserState = {
+  user: null | { name: string; email: string; };
+  isAuthChecked: boolean,
+  isResetEmailSent: boolean,
+};
+
+const initialState: TUserState = {
   user: null,
   isAuthChecked: false,
   isResetEmailSent: false,
@@ -104,6 +113,8 @@ export const userSlice = createSlice({
     },
   },
 });
+
+export const getUserUser = (state: RootState) => state.user.user;
 
 export const { setAuthChecked, setResetEmailSent, setUser } = userSlice.actions;
 

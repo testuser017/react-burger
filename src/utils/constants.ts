@@ -2,7 +2,7 @@ export const API_URL_BASE = 'https://norma.nomoreparties.space/api/';
 export const API_URL_INGREDIENTS = process.env.REACT_APP_LOCALHOST_API_URL_INGREDIENTS ?? `${API_URL_BASE}ingredients`;
 export const API_URL_ORDERS = process.env.REACT_APP_LOCALHOST_API_URL_ORDERS ?? `${API_URL_BASE}orders`;
 
-export const DICTIONARY = {
+export const DICTIONARY: { [key: string]: string } = {
   top: 'верх',
   bottom: 'низ',
   bun: 'Булки',
@@ -13,13 +13,6 @@ export const DICTIONARY = {
   carbohydrates: 'Углеводы, г',
   calories: 'Калории,ккал',
 };
-
-export const MACRONUTRIENTS = [
-  'calories',
-  'proteins',
-  'fat',
-  'carbohydrates',
-];
 
 export const LOGIN_URL = '/login';
 export const REGISTER_URL = '/register';

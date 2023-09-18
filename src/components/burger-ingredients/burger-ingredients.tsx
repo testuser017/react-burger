@@ -1,13 +1,18 @@
-import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import { ingredientsListType } from '../../utils/types';
+import { FC, forwardRef, useEffect, useMemo, useRef, useState } from 'react';
+import { useAppSelector } from '../../hooks/store-hooks';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
 import { DICTIONARY } from '../../utils/constants';
 import styles from './burger-ingredients.module.css';
+import { TIngredient } from '../../utils/types';
+import { getIngredientsData } from '../../services/slices/burger-ingredients';
 
-const BurgerIngredientsGroup = forwardRef((props, ref) => {
+type Props = {
+  ingredientsGroupName: string;
+  ingredientsList: TIngredient[];
+};
+
+const BurgerIngredientsGroup = forwardRef<HTMLElement, Props>((props, ref) => {
   const { ingredientsGroupName, ingredientsList } = props;
   return (
     <section ref={ref}>
@@ -21,16 +26,12 @@ const BurgerIngredientsGroup = forwardRef((props, ref) => {
   );
 });
 
-BurgerIngredientsGroup.propTypes = {
-  ingredientsGroupName: PropTypes.string.isRequired,
-  ingredientsList: ingredientsListType.isRequired,
-};
+const BurgerIngredients: FC = () => {
+  const dataList = useAppSelector(getIngredientsData);
 
-const BurgerIngredients = () => {
-  const dataList = useSelector(state => state.burgerIngredients.data);
-
-  const ingredientsTypes = useMemo(
-    () => [...new Set(dataList.map(x => x.type))],
+  const ingredientsTypes = useMemo<string[]>(
+//  () => [...new Set(dataList.map(x => x.type))], // ts 2802 downlevelIteration
+    () => [...Array.from(new Set(dataList.map(x => x.type)))],
     [dataList]
   );
   const [currentTab, setCurrentTab] = useState(ingredientsTypes[0]);
@@ -38,18 +39,19 @@ const BurgerIngredients = () => {
     setCurrentTab(ingredientsTypes[0]);
   }, [ingredientsTypes]);
 
-  const scrollBlockRef = useRef(null);
-  const ingredientsGroupsRefs = useRef({});
+  const scrollBlockRef = useRef<HTMLDivElement>(null);
+//const ingredientsGroupsRefs = useRef<{[key: typeof ingredientsTypes[number]]: HTMLElement}>({}); // ??
+  const ingredientsGroupsRefs = useRef<{[key: string]: HTMLElement}>({});
 
   const scrollHandler = () => {
-    const scrollBlockY = scrollBlockRef.current.getBoundingClientRect().y;
-    const groupsYDiffs = ingredientsTypes.map(typeName => Math.abs(ingredientsGroupsRefs.current[typeName].getBoundingClientRect().y - scrollBlockY));
+    const scrollBlockY = scrollBlockRef.current?.getBoundingClientRect().y ?? 0;
+    const groupsYDiffs = ingredientsTypes.map((typeName) => Math.abs(ingredientsGroupsRefs.current[typeName].getBoundingClientRect().y - scrollBlockY));
     const minDiffIndex = groupsYDiffs.indexOf(Math.min(...groupsYDiffs));
     const closestGroup = ingredientsTypes[minDiffIndex];
     setCurrentTab(closestGroup);
   };
 
-  const tabClickHandler = (typeName) => {
+  const tabClickHandler = (typeName: string) => {
     ingredientsGroupsRefs.current[typeName].scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -76,7 +78,7 @@ const BurgerIngredients = () => {
             key={item}
             ingredientsGroupName={DICTIONARY[item] ?? item}
             ingredientsList={dataList.filter(el => el.type === item)}
-            ref={el => ingredientsGroupsRefs.current[item] = el}
+            ref={el => ingredientsGroupsRefs.current[item] = el as HTMLElement}
           />
         ))}
       </div>

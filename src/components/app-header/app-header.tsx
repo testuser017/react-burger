@@ -1,11 +1,12 @@
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/store-hooks';
+import { getUserUser } from '../../services/slices/user';
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { PROFILE_URL } from '../../utils/constants';
 import styles from './app-header.module.css';
 
 const AppHeader = () => {
-  const userName = useSelector((store) => store.user.user?.name);
+  const user = useAppSelector(getUserUser);
 
   return (
     <header className={`${styles.header} pb-4 pt-4`}>
@@ -44,7 +45,7 @@ const AppHeader = () => {
             >{({ isActive }) => (
               <>
                 <ProfileIcon type={isActive ? 'primary' : 'secondary'} />
-                <span className={`ml-2 text_color_${isActive ? 'primary' : 'inactive'}`}>{userName ?? 'Личный кабинет'}</span>
+                <span className={`ml-2 text_color_${isActive ? 'primary' : 'inactive'}`}>{user?.name ?? 'Личный кабинет'}</span>
               </>
             )}
             </NavLink>

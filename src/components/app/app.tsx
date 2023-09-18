@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/store-hooks';
 import AppHeader from '../app-header/app-header';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
@@ -24,15 +24,16 @@ import { checkUserAuth } from '../../services/slices/user';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;
-  const apiDataStatus = useSelector(state => state.burgerIngredients.status); // TODO: isLoading
-//const errorMessage = useSelector(state => state.burgerIngredients.error); // TODO: isError
+  const apiDataStatus = useAppSelector((state) => state.burgerIngredients.status); // TODO: isLoading
+//const errorMessage = useAppSelector((state) => state.burgerIngredients.error); // TODO: isError
 
   useEffect(() => {
     dispatch(checkUserAuth());
+  // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
