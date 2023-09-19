@@ -1,22 +1,20 @@
-import { useDispatch } from 'react-redux';
+import { FormEvent } from 'react';
+import { useAppDispatch } from '../hooks/store-hooks';
 import { Link } from 'react-router-dom';
-import {
-  Button,
-  EmailInput,
-  PasswordInput,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { EmailInputMod } from '../components/mod-inputs/email-input-mod';
+import { PasswordInputMod } from '../components/mod-inputs/password-input-mod';
 import useFormAndValidation from '../hooks/useFormAndValidation';
 import { login } from '../services/slices/user';
 import { FORGOT_PASSWORD_URL, REGISTER_URL } from '../utils/constants';
 
 const LoginPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { values, handleChange, errors, isValid } = useFormAndValidation();
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(login({
-      name: values.name,
       email: values.email,
       password: values.password,
     }));
@@ -26,18 +24,18 @@ const LoginPage = () => {
     <main className='formWrapper'>
       <h1 className='text text_type_main-medium'>Вход</h1>
       <form onSubmit={handleFormSubmit}>
-        <EmailInput
-          extraClass={'mt-6'}
-          name={'email'}
+        <EmailInputMod
+          extraClass='mt-6'
+          name='email'
           value={values.email ?? ''}
           onChange={handleChange}
           error={!!errors.email}
           required={true}
           autoFocus
         />
-        <PasswordInput
-          extraClass={'mt-6'}
-          name={'password'}
+        <PasswordInputMod
+          extraClass='mt-6'
+          name='password'
           value={values.password ?? ''}
           onChange={handleChange}
           error={!!errors.password}

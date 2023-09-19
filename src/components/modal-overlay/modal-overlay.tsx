@@ -1,17 +1,16 @@
-import PropTypes from 'prop-types';
+import { FC, PropsWithChildren } from 'react';
 import styles from './modal-overlay.module.css';
 
-const ModalOverlay = ({ hideModal, children }) => {
+type Props = {
+  hideModal: () => void;
+};
+
+const ModalOverlay: FC<PropsWithChildren<Props>> = ({ hideModal, children }) => {
   return (
     <div className={styles.modalOverlay} onClick={hideModal}>
       {children}
     </div>
   );
-};
-
-ModalOverlay.propTypes = {
-  hideModal: PropTypes.func.isRequired,
-  children: PropTypes.node,
 };
 
 export default ModalOverlay;

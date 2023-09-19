@@ -1,27 +1,47 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/store-hooks';
 import { useDrop } from 'react-dnd';
-import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { addIngredient, burgerConstructorTotalPrice } from '../../services/slices/burger-constructor';
+import { Button, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import { addIngredient, burgerConstructorTotalPrice, getConstructorBun, getConstructorFilling } from '../../services/slices/burger-constructor';
+import { getUserUser } from '../../services/slices/user';
 import { orderRequest } from '../../services/slices/order';
 import { emptyConstructor } from '../../services/slices/burger-constructor';
 import BurgerConstructorItem from '../burger-constructor-item/burger-constructor-item';
 import Price from '../price/price';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
-import { LOGIN_URL } from '../../utils/constants';
+import { DICTIONARY, LOGIN_URL } from '../../utils/constants';
 import styles from './burger-constructor.module.css';
+import stylesItem from '../burger-constructor-item/burger-constructor-item.module.css';
+import { TIngredient } from '../../utils/types';
 
-const BurgerConstructor = () => {
-  const dispatch = useDispatch();
+type Props = {
+  bun: TIngredient;
+  type: 'top' | 'bottom';
+};
+
+const BurgerConstructorBun: FC<Props> = ({ bun, type }) => (
+  <div className={`${stylesItem.constructorItem} ml-8`}>
+    <ConstructorElement
+      text={`${bun.name} (${DICTIONARY[`${type}`]})`}
+      price={bun.price}
+      thumbnail={bun.image}
+      type={type}
+      isLocked={true}
+    />
+  </div>
+);
+
+const BurgerConstructor: FC = () => {
+  const dispatch = useAppDispatch();
   const [showOrderModal, setShowOrderModal] = useState(false);
 
   const navigate = useNavigate();
-  const user = useSelector((store) => store.user.user);
-  const bun = useSelector(state => state.burgerConstructor.bun);
-  const filling = useSelector(state => state.burgerConstructor.filling);
-  const price = useSelector(burgerConstructorTotalPrice);
+  const user = useAppSelector(getUserUser);
+  const bun = useAppSelector(getConstructorBun);
+  const filling = useAppSelector(getConstructorFilling);
+  const price = useAppSelector(burgerConstructorTotalPrice);
 
   const [{isHover}, dropRef] = useDrop({
     accept: 'ingredientsItem',
@@ -34,6 +54,7 @@ const BurgerConstructor = () => {
   });
 
   const handleOrder = () => {
+    if(!bun) return;
     if(user) {
       dispatch(orderRequest([
         bun._id,
@@ -54,13 +75,13 @@ const BurgerConstructor = () => {
   return (
     <>
       <section className={`${styles.burgerConstructor} ${isHover && styles.burgerConstructorDndHover} pt-25 pl-4`} ref={dropRef}>
-        {bun && <BurgerConstructorItem constructorItem={bun} type='top' />}
+        {bun && <BurgerConstructorBun bun={bun} type='top' />}
         <section className={`${styles.burgerConstructorWrap} custom-scroll`}>
           {filling.map((item, index) => {
             return <BurgerConstructorItem key={item.uuid} constructorItem={item} index={index} />
           })}
         </section>
-        {bun && <BurgerConstructorItem constructorItem={bun} type='bottom' />}
+        {bun && <BurgerConstructorBun bun={bun} type='bottom' />}
         <div className={`${styles.burgerConstructorTotal} mr-4 mt-10`}>
           <Price priceValue={price} size="medium" />
           <Button

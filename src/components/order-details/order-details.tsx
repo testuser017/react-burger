@@ -1,10 +1,11 @@
-import { useSelector } from 'react-redux';
+import { FC } from 'react';
+import { useAppSelector } from '../../hooks/store-hooks';
 // import { ReactComponent as DoneImg} from '../../images/done.svg';
 import doneImg from '../../images/done.svg';
 import styles from './order-details.module.css';
 
-const OrderDetails = () => {
-  const orderNumber = useSelector(state => state.order.dataResponse?.order?.number);
+const OrderDetails: FC = () => {
+  const orderNumber = useAppSelector((state) => state.order.dataResponse?.order?.number);
 
   return (
     <div className={`${styles.orderDetails} pt-4 pr-15 pb-20 pl-15`}>

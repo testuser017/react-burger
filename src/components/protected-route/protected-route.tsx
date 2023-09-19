@@ -1,16 +1,23 @@
 // https://codesandbox.io/p/github/akruglov-it/protected-route-updated-sandbox/postcode-classic?file=/src/components/protected-route.jsx:1,1
 // https://app.pachca.com/chats/6399739?message=74300874
 
-import { useSelector } from "react-redux";
+import { FC, ReactElement } from "react";
+import { useAppSelector } from "../../hooks/store-hooks";
 import { Navigate, useLocation } from "react-router-dom";
+import { getUserUser } from "../../services/slices/user";
 import { LOGIN_URL } from "../../utils/constants";
 
-const Protected = ({ onlyUnAuth = false, component }) => {
+type Props = {
+  onlyUnAuth?: boolean;
+  component: ReactElement;
+};
+
+const Protected: FC<Props> = ({ onlyUnAuth = false, component }) => {
   // isAuthChecked это флаг, показывающий что проверка токена произведена
   // при этом результат этой проверки не имеет значения, важно только,
   // что сам факт проверки имел место.
-  const isAuthChecked = useSelector((store) => store.user.isAuthChecked);
-  const user = useSelector((store) => store.user.user);
+  const isAuthChecked = useAppSelector((state) => state.user.isAuthChecked);
+  const user = useAppSelector(getUserUser);
   const location = useLocation();
 
   if (!isAuthChecked) {
@@ -37,6 +44,6 @@ const Protected = ({ onlyUnAuth = false, component }) => {
 };
 
 export const OnlyAuth = Protected;
-export const OnlyUnAuth = ({ component }) => (
+export const OnlyUnAuth: FC<Props> = ({ component }) => (
   <Protected onlyUnAuth={true} component={component} />
 );

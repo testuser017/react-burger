@@ -1,6 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { TIngredient, TIngredientConstructor } from '../../utils/types';
+import { RootState } from '../store';
 
-const initialState = {
+type TBurgerConstructorState = {
+  bun: null | TIngredient;
+  filling: TIngredientConstructor[];
+};
+
+const initialState: TBurgerConstructorState = {
   bun: null,
   filling: [],
 };
@@ -10,8 +17,9 @@ export const burgerConstructorSlice = createSlice({
   initialState,
   reducers: {
     // https://redux-toolkit.js.org/api/createslice#customizing-generated-action-creators
+    // https://redux.js.org/usage/usage-with-typescript
     addIngredient: {
-      reducer: (state, action) => {
+      reducer: (state, action: PayloadAction<TIngredientConstructor>) => {
         if(action.payload.type === 'bun') {
           state.bun = action.payload;
         } else {
@@ -33,7 +41,7 @@ export const burgerConstructorSlice = createSlice({
   }
 });
 
-export const burgerConstructorTotalPrice = state => {
+export const burgerConstructorTotalPrice = (state: RootState) => {
   const bun = state.burgerConstructor.bun;
   const totalPrice = state.burgerConstructor.filling.reduce(
     (total, dataItem) => total + dataItem.price,
@@ -42,11 +50,15 @@ export const burgerConstructorTotalPrice = state => {
   return totalPrice;
 };
 
-export const countItemsById = (id, type) => state => {
+export const countItemsById = (id: string, type: string) => (state: RootState) => {
   const bun = state.burgerConstructor.bun;
   const count = state.burgerConstructor.filling.filter(item => item._id === id).length;
   return type === 'bun' && id === bun?._id ? 2 : count;
 };
+
+export const getConstructorBun = (state: RootState) => state.burgerConstructor.bun;
+
+export const getConstructorFilling = (state: RootState) => state.burgerConstructor.filling;
 
 export const { addIngredient, delIngredient, moveIngredient, emptyConstructor } = burgerConstructorSlice.actions;
 

@@ -1,22 +1,19 @@
-import { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FormEvent, useCallback, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/store-hooks';
 import { NavLink } from 'react-router-dom';
-import {
-  Button,
-  EmailInput,
-  Input,
-  PasswordInput,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import { EmailInputMod } from '../../components/mod-inputs/email-input-mod';
+import { PasswordInputMod } from '../../components/mod-inputs/password-input-mod';
 import useFormAndValidation from '../../hooks/useFormAndValidation';
-import { logout, updateUser } from '../../services/slices/user';
+import { getUserUser, logout, updateUser } from '../../services/slices/user';
 import { ORDERS_URL, PROFILE_URL } from '../../utils/constants';
 import styles from './profile.module.css';
 
 const ProfilePage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { values, handleChange, errors, isValid, setValues } = useFormAndValidation();
 
-  const user = useSelector((store) => store.user.user);
+  const user = useAppSelector(getUserUser);
 
   const handleFormReset = useCallback(() => {
     setValues({
@@ -34,7 +31,7 @@ const ProfilePage = () => {
     dispatch(logout());
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 //  dispatch(updateUser( Object.fromEntries(new FormData(e.target)) ));
 //  dispatch(updateUser(values));
@@ -72,34 +69,34 @@ const ProfilePage = () => {
       <section>
         <form onSubmit={handleFormSubmit} className={styles.profileForm}>
           <Input
-            extraClass={'mt-6'}
-            placeholder={'Имя'}
-            name={'name'}
+            extraClass='mt-6'
+            placeholder='Имя'
+            name='name'
             value={values.name ?? ''}
             onChange={handleChange}
             error={!!errors.name}
             required={true}
-            icon={'EditIcon'}
+            icon='EditIcon'
             autoFocus
           />
-          <EmailInput
-            extraClass={'mt-6'}
-            placeholder={'Логин'}
-            name={'email'}
+          <EmailInputMod
+            extraClass='mt-6'
+            placeholder='Логин'
+            name='email'
             value={values.email ?? ''}
             onChange={handleChange}
             error={!!errors.email}
             required={true}
-            icon={'EditIcon'}
+            isIcon
           />
-          <PasswordInput
-            extraClass={'mt-6'}
-            name={'password'}
+          <PasswordInputMod
+            extraClass='mt-6'
+            name='password'
             value={values.password ?? ''}
             onChange={handleChange}
             error={!!errors.password}
             required={true}
-            // icon={'EditIcon'}
+            icon='EditIcon'
           />
           {(values.name !== (user?.name ?? '') || values.email !== (user?.email ?? '') || values.password !== '') && (
             <>
