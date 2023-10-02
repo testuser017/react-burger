@@ -1,12 +1,11 @@
 import { FormEvent, useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/store-hooks';
-import { NavLink } from 'react-router-dom';
+import useFormAndValidation from '../../hooks/useFormAndValidation';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { EmailInputMod } from '../../components/mod-inputs/email-input-mod';
 import { PasswordInputMod } from '../../components/mod-inputs/password-input-mod';
-import useFormAndValidation from '../../hooks/useFormAndValidation';
-import { getUserUser, logout, updateUser } from '../../services/slices/user';
-import { ORDERS_URL, PROFILE_URL } from '../../utils/constants';
+import ProfilePageNav from './profile-nav';
+import { getUserUser, updateUser } from '../../services/slices/user';
 import styles from './profile.module.css';
 
 const ProfilePage = () => {
@@ -27,10 +26,6 @@ const ProfilePage = () => {
     handleFormReset();
   }, [handleFormReset, user]);
 
-  const handleLogoutClick = () => {
-    dispatch(logout());
-  };
-
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 //  dispatch(updateUser( Object.fromEntries(new FormData(e.target)) ));
@@ -43,33 +38,11 @@ const ProfilePage = () => {
   };
 
   return (
-    <main className={`${styles.profile} pl-5 pr-5`}>
-      <section className={styles.profileSidebar}>
-        <ul className={`${styles.profileMenu} text text_type_main-medium`}>
-          <li>
-            <NavLink
-              className={({ isActive }) => isActive ? styles.profileMenuLinkActive : styles.profileMenuLink}
-              to={PROFILE_URL}>Профиль</NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={({ isActive }) => isActive ? styles.profileMenuLinkActive : styles.profileMenuLink}
-              to={ORDERS_URL('')}>История заказов</NavLink>
-          </li>
-          <li>
-            <Button htmlType='button' type='secondary' extraClass={styles.profileMenuButton} onClick={handleLogoutClick}>
-              Выход
-            </Button>
-          </li>
-        </ul>
-        <p className='text text_type_main-default text_color_inactive mt-20'>
-          В этом разделе вы можете изменить свои персональные данные
-        </p>
-      </section>
+    <main className="main-profile">
+      <ProfilePageNav />
       <section>
         <form onSubmit={handleFormSubmit} className={styles.profileForm}>
           <Input
-            extraClass='mt-6'
             placeholder='Имя'
             name='name'
             value={values.name ?? ''}

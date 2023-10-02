@@ -41,7 +41,7 @@ export const burgerConstructorSlice = createSlice({
   }
 });
 
-export const burgerConstructorTotalPrice = (state: RootState) => {
+export const getConstructorTotalPrice = (state: RootState) => {
   const bun = state.burgerConstructor.bun;
   const totalPrice = state.burgerConstructor.filling.reduce(
     (total, dataItem) => total + dataItem.price,
@@ -50,10 +50,10 @@ export const burgerConstructorTotalPrice = (state: RootState) => {
   return totalPrice;
 };
 
-export const countItemsById = (id: string, type: string) => (state: RootState) => {
+export const countConstructorItemsById = (id: string) => (state: RootState) => {
   const bun = state.burgerConstructor.bun;
-  const count = state.burgerConstructor.filling.filter(item => item._id === id).length;
-  return type === 'bun' && id === bun?._id ? 2 : count;
+  const constructorItems = bun ? [bun, ...state.burgerConstructor.filling, bun] : state.burgerConstructor.filling;
+  return constructorItems.filter(item => item._id === id).length;
 };
 
 export const getConstructorBun = (state: RootState) => state.burgerConstructor.bun;

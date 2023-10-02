@@ -3,17 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/store-hooks';
 import { useDrop } from 'react-dnd';
 import { Button, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { addIngredient, burgerConstructorTotalPrice, getConstructorBun, getConstructorFilling } from '../../services/slices/burger-constructor';
+import { addIngredient, getConstructorTotalPrice, getConstructorBun, getConstructorFilling } from '../../services/slices/burger-constructor';
 import { getUserUser } from '../../services/slices/user';
-import { orderRequest } from '../../services/slices/order';
+import { requestOrder } from '../../services/slices/order';
 import { emptyConstructor } from '../../services/slices/burger-constructor';
-import BurgerConstructorItem from '../burger-constructor-item/burger-constructor-item';
+import BurgerConstructorItem from './burger-constructor-item';
 import Price from '../price/price';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
 import { DICTIONARY, LOGIN_URL } from '../../utils/constants';
 import styles from './burger-constructor.module.css';
-import stylesItem from '../burger-constructor-item/burger-constructor-item.module.css';
+import stylesItem from './burger-constructor-item.module.css';
 import { TIngredient } from '../../utils/types';
 
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
 const BurgerConstructorBun: FC<Props> = ({ bun, type }) => (
   <div className={`${stylesItem.constructorItem} ml-8`}>
     <ConstructorElement
-      text={`${bun.name} (${DICTIONARY[`${type}`]})`}
+      text={`${bun.name} (${DICTIONARY(`${type}`)})`}
       price={bun.price}
       thumbnail={bun.image}
       type={type}
@@ -41,7 +41,7 @@ const BurgerConstructor: FC = () => {
   const user = useAppSelector(getUserUser);
   const bun = useAppSelector(getConstructorBun);
   const filling = useAppSelector(getConstructorFilling);
-  const price = useAppSelector(burgerConstructorTotalPrice);
+  const price = useAppSelector(getConstructorTotalPrice);
 
   const [{isHover}, dropRef] = useDrop({
     accept: 'ingredientsItem',
@@ -53,14 +53,18 @@ const BurgerConstructor: FC = () => {
     },
   });
 
-  const handleOrder = () => {
+  const handleOrderClick = () => {
     if(!bun) return;
     if(user) {
-      dispatch(orderRequest([
-        bun._id,
-        ...filling.map(item => item._id),
-        bun._id,
-      ]));
+      dispatch(requestOrder(
+        {
+          ingredients: [
+            bun._id,
+            ...filling.map(item => item._id),
+            bun._id,
+          ]
+        }
+      ));
       setShowOrderModal(true);
     } else {
       navigate(LOGIN_URL);
@@ -83,12 +87,12 @@ const BurgerConstructor: FC = () => {
         </section>
         {bun && <BurgerConstructorBun bun={bun} type='bottom' />}
         <div className={`${styles.burgerConstructorTotal} mr-4 mt-10`}>
-          <Price priceValue={price} size="medium" />
+          <Price priceValue={price} extraClass="size-medium" />
           <Button
             htmlType="button"
             type="primary"
             size="large"
-            onClick={handleOrder}
+            onClick={handleOrderClick}
             disabled={!bun}
           >
             Оформить заказ

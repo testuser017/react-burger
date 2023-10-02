@@ -1,0 +1,53 @@
+.ordersList {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  height: calc(100vh - 188px - 60px); /* 188px = height before scroll block ; 60px = after */
+  overflow-y: auto;
+  width: calc(50% - var(--offset-base-size) * 7.5);
+  scroll-snap-type: y mandatory;
+}
+
+.ordersListProfilePage {
+  flex-grow: 1;
+  height: calc(100vh - 128px - 60px); /* 128px = height before scroll block ; 60px = after */
+  margin-top: calc(var(--offset-base-size) * 10);
+}
+
+.ordersListItem {
+  background: var(--background);
+  border-radius: 40px;
+  box-sizing: border-box;
+  box-shadow:
+    0px 0px 1px 0px rgba(0, 0, 0, 0.04),
+    0px 0px 2px 0px rgba(0, 0, 0, 0.06),
+    0px 4px 8px 0px rgba(0, 0, 0, 0.04);
+  color: var(--text-primary-color);
+  padding: 24px;
+  scroll-snap-align: start;
+  width: calc(100% - 8px);
+}
+
+.ordersListItem:hover {
+  background: var(--background-element);
+}
+
+.ordersListNumTime {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ordersListNum {
+  font-family: Iceland;
+  font-size: 28px;
+  line-height: 24px; /* 85.714% */
+}
+
+.ordersListName {
+  margin: 24px 0 8px;
+}
+
+.ordersListStatus[data-status='done'] {
+  color: var(--colors-interface-success);
+}

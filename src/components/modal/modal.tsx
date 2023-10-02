@@ -6,12 +6,7 @@ import styles from './modal.module.css';
 
 const modalRoot = document.getElementById("react-modals") as HTMLElement;
 
-type Props = {
-  hideModal: () => void;
-  modalHeaderText?: string;
-};
-
-const Modal: FC<PropsWithChildren<Props>> = ({ modalHeaderText = '', hideModal, children }) => {
+const Modal: FC<PropsWithChildren<{ hideModal: () => void }>> = ({ hideModal, children }) => {
 
   useEffect(() => {
     const keyPressHandler = (event: KeyboardEvent) => {
@@ -23,25 +18,21 @@ const Modal: FC<PropsWithChildren<Props>> = ({ modalHeaderText = '', hideModal, 
     return () => {
       document.removeEventListener('keydown', keyPressHandler);
     }
-  // eslint-disable-next-line
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return createPortal(
     (
       <ModalOverlay hideModal={hideModal}>
         <div className={styles.modal} onClick={event => event.stopPropagation()}>
-          <div className={styles.modalHeaderWrap}>
-            {modalHeaderText && <h2 className="text text_type_main-large">{modalHeaderText}</h2>}
-            <Button
-              htmlType="button"
-              type="secondary"
-              className={styles.modalButtonClose}
-              onClick={hideModal}
-            >
-              <CloseIcon type="primary" />
-            </Button>
-          </div>
           {children}
+          <Button
+            htmlType="button"
+            type="secondary"
+            className={styles.modalButtonClose}
+            onClick={hideModal}
+          >
+            <CloseIcon type="primary" />
+          </Button>
         </div>
       </ModalOverlay>
     ),

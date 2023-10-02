@@ -1,7 +1,8 @@
 .ingredientDetails {
   margin: 0 auto;
+  padding-bottom: 20px;
   text-align: center;
-  width: 520px;
+  width: 640px;
 }
 
 .ingredientDetailsImg {
@@ -13,10 +14,28 @@
   display: flex;
   column-gap: 20px;
   list-style: none;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
+  width: 520px;
 }
 
 .ingredientDetailsPropItem {
   flex: 1 1 auto;
+}
+
+.ingredientDetailsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Jet Brains Mono';
+  font-size: 36px;
+  line-height: 1.1;
+  margin: 120px 0 0;
+  min-height: 64px;
+}
+
+:global(#react-modals) .ingredientDetailsHeader {
+  justify-content: left;
+  margin-top: 0;
+  width: 580px;
 }

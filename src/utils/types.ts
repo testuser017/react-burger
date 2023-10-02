@@ -17,6 +17,10 @@ export type TIngredientConstructor = {
   uuid: string;
 } & TIngredient;
 
+export type TRequestOrder = {
+  'ingredients': string[];
+};
+
 export type TUser = {
   name?: string;
   email: string;
@@ -59,4 +63,33 @@ export type TResponseTokens = {
 export type TResponseMessage = {
   success: boolean;
   message: string;
+};
+
+export type TResponseIngredients = {
+  success: boolean;
+  data: TIngredient[];
+};
+
+export type TResponseOrder = {
+  success: boolean;
+  name: string;
+  order: {
+    number: number | null;
+  };
+};
+
+export type TResponseOrders = {
+  success: boolean;
+  orders: {
+    _id: string;
+    ingredients: string[];
+    owner?: string;
+    status: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+    number: number;
+  }[];
+  total?: number;
+  totalToday?: number;
 };

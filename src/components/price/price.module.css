@@ -3,9 +3,25 @@
   align-items: center;
   column-gap: calc(var(--offset-base-size) * 2);
   justify-content: center;
+  white-space: nowrap;
 }
 
-.size-medium svg {
+/* text_type_digits-default */
+.priceValue {
+  font-family: 'Iceland';
+  font-weight: normal;
+  font-size: 28px;
+  /* line-height: .86; */
+  line-height: 24px; /* 85.714% */
+}
+
+/* text_type_digits-medium */
+:global(.size-medium) .priceValue {
+  font-size: 48px;
+  line-height: .75;
+}
+
+:global(.size-medium) svg {
   height: 36px;
   width: 36px;
 }

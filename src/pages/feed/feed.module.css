@@ -1,0 +1,9 @@
+.feedPageHeader {
+  font-family: 'Jet Brains Mono';
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 40px; /* 111.111% */
+  margin: 40px auto 20px;
+  width: 100%;
+}

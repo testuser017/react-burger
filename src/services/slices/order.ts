@@ -1,66 +1,43 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { API_URL_ORDERS } from '../../utils/constants';
-
-type TOrderResponse = { // TODO: check response data values and types
-  name: string,
-  order: {
-    number: number | null
-  }
-  success: boolean,
-};
+import { fetchOrder } from '../../utils/api';
+import { TResponseOrder } from '../../utils/types';
 
 type TOrderState = {
-  dataResponse: null | TOrderResponse;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed'; // enum ??
+  data: null | TResponseOrder;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: null | string | undefined;
 };
 
 const initialState: TOrderState = {
-  dataResponse: null,
+  data: null,
   status: 'idle',
   error: null,
 };
 
-export const orderRequest = createAsyncThunk('order/orderRequest', async (ingredientIdList: string[], { rejectWithValue }) => {
-  try {
-    // TODO: move fetch to API file
-    const res = await fetch(API_URL_ORDERS, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify({
-        'ingredients': ingredientIdList
-      })
-    });
-    if(!res.ok) {
-      throw Error(res.statusText);
-    }
-    return await res.json(); // await ??
-  } catch(error) {
-    console.log(error);
-    return rejectWithValue(error);
-  };
-});
+export const requestOrder = createAsyncThunk('order/requestOrder', fetchOrder);
 
 export const orderSlice = createSlice({
   name: 'order',
   initialState,
-  reducers: {},
+  reducers: {
+    emptyOrder: () => initialState,
+  },
   extraReducers(builder) {
     builder
-      .addCase(orderRequest.pending, (state, action) => {
+      .addCase(requestOrder.pending, (state, action) => {
         state.status = 'loading';
       })
-      .addCase(orderRequest.fulfilled, (state, action) => {
+      .addCase(requestOrder.fulfilled, (state, action) => {
         state.status = action.payload.success === true ? 'succeeded' : 'failed';
-        state.dataResponse = action.payload;
+        state.data = action.payload;
       })
-      .addCase(orderRequest.rejected, (state, action) => {
+      .addCase(requestOrder.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       })
     }
 });
+
+export const { emptyOrder } = orderSlice.actions;
 
 export default orderSlice.reducer;

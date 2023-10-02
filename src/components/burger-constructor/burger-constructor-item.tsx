@@ -50,7 +50,7 @@ const BurgerConstructorItem: FC<Props> = ({ constructorItem, index }) => {
   });
   dragRef(dropRef(ref));
 
-  const handleClose = () => dispatch(delIngredient(constructorItem.uuid));
+  const handleDeleteClick = () => dispatch(delIngredient(constructorItem.uuid));
 
   return (
     <div className={`${styles.constructorItem} ${isDragging && styles.constructorItemDndDragging}`} ref={ref}>
@@ -59,7 +59,7 @@ const BurgerConstructorItem: FC<Props> = ({ constructorItem, index }) => {
         text={constructorItem.name}
         price={constructorItem.price}
         thumbnail={constructorItem.image}
-        handleClose={handleClose}
+        handleClose={handleDeleteClick}
       />
     </div>
   );

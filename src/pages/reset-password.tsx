@@ -15,8 +15,7 @@ const ResetPasswordPage = () => {
 
   useEffect(() => {
     !isResetEmailSent && navigate(FORGOT_PASSWORD_URL);
-  // eslint-disable-next-line
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

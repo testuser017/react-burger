@@ -1,0 +1,93 @@
+.orderInfo {
+  margin: 0 auto;
+  width: 640px;
+}
+
+.orderInfoNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Iceland;
+  font-size: 28px;
+  font-weight: normal;
+  line-height: .86;
+  margin: 120px 0 20px;
+  min-height: 64px;
+}
+
+:global(#react-modals) .orderInfoNumber {
+  justify-content: left;
+  margin-top: 0;
+}
+
+.orderInfoName,
+.orderInfoIngredients {
+  font-size: 24px;
+  line-height: 1.25;
+  margin: 0 0 8px;
+}
+
+.orderInfoIngredients {
+  margin-bottom: 24px;
+}
+
+.orderInfoStatus {
+  color: var(--colors-interface-success);
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.5;
+  margin: 0 0 70px;
+}
+
+.orderInfoTimePrice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.orderInfoList {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  list-style: none;
+  margin: 0 0 40px;
+  padding: 0;
+  max-height: 304px; /* 4 * itemHeight: 64px + 3 * row-gap: 16px */
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+
+.orderInfoListItem {
+  display: flex;
+  column-gap: 16px;
+  scroll-snap-align: start;
+  width: 608px;
+}
+
+.orderInfoListItemImgWrap {
+  background-image:
+    linear-gradient(0deg, #131316, #131316),
+    radial-gradient(circle at bottom left, #801ab3, #4c4cff);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  /* border: 2px solid #801ab2; */
+  border: 2px solid transparent;
+  border-radius: 50%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  height: 64px;
+  min-width: 64px;
+  width: 64px;
+  overflow: hidden;
+  padding: 4px 0;
+}
+
+.orderInfoListName {
+  display: flex;
+  align-items: center;
+}
+
+.orderInfoListPrice {
+  margin-left: auto;
+}

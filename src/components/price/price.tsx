@@ -3,12 +3,12 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import styles from './price.module.css';
 
 const Price: FC<{
-  priceValue: number;
-  size?: 'default' | 'medium';
-}> = ({ priceValue = 0, size = 'default' }) => {
+  priceValue: number | string;
+  extraClass?: string;
+}> = ({ priceValue = 0, extraClass = '' }) => {
   return (
-    <div className={`${styles.price} ${styles[`size-${size}`]}`}>
-      <div className={`text text_type_digits-${size}`}>{priceValue}</div>
+    <div className={`${styles.price} ${extraClass}`}>
+      <div className={styles.priceValue}>{priceValue}</div>
       <CurrencyIcon type="primary" />
     </div>
   );

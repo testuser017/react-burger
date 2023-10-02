@@ -1,0 +1,33 @@
+.ordersIngsPrice {
+  display: flex;
+  margin-top: 24px;
+}
+
+.ordersIngs {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-left: 16px;
+}
+
+.ordersPrice {
+  margin-left: auto;
+}
+
+.ordersImgWrap {
+  composes: orderInfoListItemImgWrap from '../order-info/order-info.module.css';
+  margin-left: -16px;
+  position: relative;
+}
+
+.ordersImgWrap[data-rest]:before {
+  background-color: rgba(28, 28, 33, 0.6);
+  content: attr( data-rest );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}

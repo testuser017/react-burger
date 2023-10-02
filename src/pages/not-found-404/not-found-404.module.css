@@ -3,35 +3,38 @@
   text-align: center;
 }
 
-.notFound img {
+.notFoundImgWrap {
+  composes: orderInfoListItemImgWrap from '../../components/order-info/order-info.module.css';
+  border-width: 4px;
+
   position: absolute;
   top: 90px;
   left: 0;
-  height: 150px;
-  width: 300px;
+  height: 128px;
+  width: 128px;
   animation:
-    move_x ease-in-out 6.1s infinite,
-    move_y ease-in-out 4.7s infinite;
+    move_x ease-in-out 6.7s infinite,
+    move_y ease-in-out 5.3s infinite;
 }
 
 @keyframes move_x {
   50% {
-    left: calc(100% - 300px);
+    left: calc(100% - 128px);
   }
 }
 
 @keyframes move_y {
   50% {
-    top: calc(100% - 150px);
+    top: calc(100% - 128px);
   }
 }
 
-.notFound img:nth-of-type(1) {animation-delay: 0}
-.notFound img:nth-of-type(2) {animation-delay: -0.4s}
-.notFound img:nth-of-type(3) {animation-delay: -0.8s}
-.notFound img:nth-of-type(4) {animation-delay: -1.2s}
-.notFound img:nth-of-type(5) {animation-delay: -1.6s}
-.notFound img:nth-of-type(6) {animation-delay: -2.0s}
-.notFound img:nth-of-type(7) {animation-delay: -2.4s}
-.notFound img:nth-of-type(8) {animation-delay: -2.8s}
-.notFound img:nth-of-type(9) {animation-delay: -3.2s}
+.notFoundImgWrap:nth-of-type(1) {animation-delay: 0}
+.notFoundImgWrap:nth-of-type(2) {animation-delay: -0.4s}
+.notFoundImgWrap:nth-of-type(3) {animation-delay: -0.8s}
+.notFoundImgWrap:nth-of-type(4) {animation-delay: -1.2s}
+.notFoundImgWrap:nth-of-type(5) {animation-delay: -1.6s}
+.notFoundImgWrap:nth-of-type(6) {animation-delay: -2.0s}
+.notFoundImgWrap:nth-of-type(7) {animation-delay: -2.4s}
+.notFoundImgWrap:nth-of-type(8) {animation-delay: -2.8s}
+.notFoundImgWrap:nth-of-type(9) {animation-delay: -3.2s}
