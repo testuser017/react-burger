@@ -1,58 +1,59 @@
 import type { Middleware, MiddlewareAPI } from 'redux';
-import { AppDispatch, RootState } from './store';
-import { setData, wsStub } from './slices/socket-data';
-import { refreshToken } from '../utils/api';
+import { AppDispatch, RootState, TAppActions } from './store';
+import { refreshTokens } from '../utils/api';
+import { TWsActions } from './slices/socket';
 
-export const socketMiddleware = (): Middleware => {
+export const socketMiddleware = (wsActions: TWsActions): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
     let wsUrl = '';
 
-    return (next) => (action) => {
+    return (next) => (action: TAppActions) => {
       const { dispatch } = store;
       const { type } = action;
+      const { wsConnect, wsDisconnect, wsOnOpen, wsOnError, wsOnMessage, wsOnClose } = wsActions;
 
-      if (type === 'socket/connect') {
-        wsUrl = action.wsUrl;
+      if (type === wsConnect) {
+        wsUrl = action.payload;
         socket = new WebSocket(wsUrl);
       }
 
       if (socket) {
         socket.onopen = (event) => {
-          dispatch(wsStub(event.type));
+          dispatch({ type: wsOnOpen, payload: event.type });
         };
 
         socket.onerror = (event) => {
-          dispatch(wsStub(event.type));
+          dispatch({ type: wsOnError, payload: event.type });
         };
 
         socket.onmessage = (event) => {
           const data = JSON.parse(event.data);
           if (data.message === 'Invalid or missing token') {
             (async () => {
-              const refreshData = await refreshToken();
+              const refreshData = await refreshTokens();
               if (!refreshData.success) {
                 return Promise.reject(refreshData);
               }
               // const newWsUrl = wsUrl.replace(/\?token=.+/, '?token=' + refreshData.accessToken.replace('Bearer ', ''));
               const newWsUrl = new URL(wsUrl);
               newWsUrl.searchParams.set('token', refreshData.accessToken.replace('Bearer ', ''));
-              dispatch({ type: 'socket/connect', wsUrl: newWsUrl.href });
+              dispatch({ type: wsConnect, payload: newWsUrl.href });
             })();
           } else {
-            dispatch(setData(data));
+            dispatch({ type: wsOnMessage, payload: data });
           }
         };
 
         socket.onclose = (event) => {
-          dispatch(wsStub(event.type));
+          dispatch({ type: wsOnClose, payload: event.type });
         };
 
-//      if (type === 'socket/send') {
+//      if (type === WS_SEND) {
 //        socket.send(JSON.stringify(wsMessage));
 //      };
 
-        if (type === 'socket/disconnect') {
+        if (type === wsDisconnect) {
           socket.close();
           socket = null;
         }

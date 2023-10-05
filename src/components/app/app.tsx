@@ -56,9 +56,9 @@ function App() {
         <Route path={FORGOT_PASSWORD_URL} element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
         <Route path={RESET_PASSWORD_URL} element={<OnlyUnAuth component={<ResetPasswordPage />} />} />
         <Route path={FEED_URL('')} element={<FeedPage />} />
-        <Route path={FEED_URL(':id')} element={<OrderInfo />} />
+        <Route path={FEED_URL(':number')} element={<OrderInfo />} />
         <Route path={PROFILE_ORDERS_URL('')} element={<OnlyAuth component={<ProfileOrdersPage />} />} />
-        <Route path={PROFILE_ORDERS_URL(':id')} element={<OnlyAuth component={<OrderInfo />} />} />
+        <Route path={PROFILE_ORDERS_URL(':number')} element={<OnlyAuth component={<OrderInfo />} />} />
         <Route path='*' element={<NotFound404Page />} />
       </Routes>
 
@@ -69,12 +69,12 @@ function App() {
               <IngredientDetails />
             </Modal>
           }/>
-          <Route path={FEED_URL(':id')} element={
+          <Route path={FEED_URL(':number')} element={
             <Modal hideModal={handleModalClose}>
               <OrderInfo />
             </Modal>
           }/>
-          <Route path={PROFILE_ORDERS_URL(':id')} element={
+          <Route path={PROFILE_ORDERS_URL(':number')} element={
             <OnlyAuth component={
               <Modal hideModal={handleModalClose}>
                 <OrderInfo />

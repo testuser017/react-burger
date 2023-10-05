@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { fetchIngredients } from '../../utils/api';
-import { TIngredient } from '../../utils/types';
+import { SliceActions, TIngredient } from '../../utils/types';
 
 type TBurgerIngredientsState = {
   data: TIngredient[],
@@ -40,3 +40,5 @@ export const burgerIngredientsSlice = createSlice({
 export const getIngredients = (state: RootState) => state.burgerIngredients.data;
 
 export default burgerIngredientsSlice.reducer;
+
+export type TBurgerIngredientsActions = SliceActions<typeof burgerIngredientsSlice.actions>;

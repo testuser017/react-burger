@@ -26,14 +26,14 @@ const OrderInfoItem: FC<{ orderItem: TOrderItem }> = ({ orderItem }) => (
 );
 
 const OrderInfo = () => {
-  const { id } = useParams();
+  const { number } = useParams();
   const dispatch = useAppDispatch();
   const orderInfo = useAppSelector((state) => state.orderInfo);
   const order = orderInfo.data?.orders[0];
   const ingsAll = useAppSelector(getIngredients);
 
   useEffect(() => {
-    id && orderInfo.status === 'idle' && dispatch(loadOrderInfo(id));
+    number && orderInfo.status === 'idle' && dispatch(loadOrderInfo(number));
     return () => {
       dispatch(emptyOrderInfo());
     };

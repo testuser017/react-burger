@@ -1,4 +1,5 @@
-import { API_URL_BASE } from '../utils/constants';
+import { API_URL_BASE } from './constants';
+import { getTokens, setTokens } from './tokens';
 import {
   TUser,
   TRequestOrder,
@@ -25,8 +26,8 @@ const fetchWithRefresh = async <T>(shortApiEndpoint: string, options: TFetchOpti
     const res = await fetch(url, options);
     return await checkReponse(res);
   } catch (err) {
-    if ((err as Error).message === 'jwt expired') {
-      const refreshData = await refreshToken();
+    if ((err as TResponseMessage).message === 'jwt expired') {
+      const refreshData = await refreshTokens();
       if (!refreshData.success) {
         return Promise.reject(refreshData);
       }
@@ -57,17 +58,14 @@ const prepareData = (
   return options;
 };
 
-const getUser = () =>
-  fetchWithRefresh<TResponseUser>('auth/user', prepareData(null, 'GET', { Authorization: localStorage.getItem('accessToken') }));
+const fetchUser = () =>
+  fetchWithRefresh<TResponseUser>('auth/user', prepareData(null, 'GET', { Authorization: getTokens().accessToken }));
 
-export const refreshToken = async () => {
-  const res = await fetchWithRefresh<TResponseTokens>('auth/token', prepareData({ token: localStorage.getItem('refreshToken') }));
-  if (res.success) {
-    localStorage.setItem('refreshToken', res.refreshToken);
-    localStorage.setItem('accessToken', res.accessToken);
-  }
+export const refreshTokens = async () => {
+  const res = await fetchWithRefresh<TResponseTokens>('auth/token', prepareData({ token: getTokens().refreshToken }));
+  res.success && setTokens(res);
   return res;
-}
+};
 
 const register = (data: TUser) =>
   fetchWithRefresh<TResponseUser & TResponseTokens>('auth/register', prepareData(data));
@@ -76,7 +74,7 @@ const login = (data: TUser) =>
   fetchWithRefresh<TResponseUser & TResponseTokens>('auth/login', prepareData(data));
 
 const logout = () =>
-  fetchWithRefresh<TResponseMessage>('auth/logout', prepareData({ token: localStorage.getItem('refreshToken') }));
+  fetchWithRefresh<TResponseMessage>('auth/logout', prepareData({ token: getTokens().refreshToken }));
 
 const forgotPassword = (data: TForgotPassword) =>
   fetchWithRefresh<TResponseMessage>('password-reset', prepareData(data));
@@ -85,20 +83,20 @@ const resetPassword = (data: TResetPassword) =>
   fetchWithRefresh<TResponseMessage>('password-reset/reset', prepareData(data));
 
 const updateUser = (data: TUser) =>
-  fetchWithRefresh<TResponseUser>('auth/user', prepareData(data, 'PATCH', { Authorization: localStorage.getItem('accessToken') }));
+  fetchWithRefresh<TResponseUser>('auth/user', prepareData(data, 'PATCH', { Authorization: getTokens().accessToken }));
 
 export const fetchIngredients = () =>
   fetchWithRefresh<TResponseIngredients>('ingredients', prepareData(null, 'GET'));
 
 export const fetchOrder = (data: TRequestOrder) =>
-  fetchWithRefresh<TResponseOrder>('orders', prepareData(data, 'POST', { Authorization: localStorage.getItem('accessToken') }));
+  fetchWithRefresh<TResponseOrder>('orders', prepareData(data, 'POST', { Authorization: getTokens().accessToken }));
 
 export const fetchOrderInfo = (id: string) =>
   fetchWithRefresh<TResponseOrders>(`orders/${id}`, prepareData(null, 'GET'));
 
 export const API = {
-  getUser,
-  refreshToken,
+  fetchUser,
+  refreshTokens,
   register,
   login,
   logout,

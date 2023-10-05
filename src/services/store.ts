@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { burgerIngredientsSlice } from './slices/burger-ingredients';
-import { burgerConstructorSlice } from './slices/burger-constructor';
-import { orderSlice } from './slices/order';
-import { orderInfoSlice } from './slices/order-info';
-import { userSlice } from './slices/user';
-import { wsDataSlice } from './slices/socket-data';
+import { TBurgerConstructorActions, burgerConstructorSlice } from './slices/burger-constructor';
+import { TBurgerIngredientsActions, burgerIngredientsSlice } from './slices/burger-ingredients';
+import { TOrderActions, orderSlice } from './slices/order';
+import { TOrderInfoActions, orderInfoSlice } from './slices/order-info';
+import { TSocketActions, socketSlice, wsActions } from './slices/socket';
+import { TUserActions, userSlice } from './slices/user';
 import { socketMiddleware } from './socket-middleware';
 
 export const store = configureStore({
@@ -13,12 +13,33 @@ export const store = configureStore({
     [burgerConstructorSlice.name]: burgerConstructorSlice.reducer,
     [orderSlice.name]: orderSlice.reducer,
     [orderInfoSlice.name]: orderInfoSlice.reducer,
+    [socketSlice.name]: socketSlice.reducer,
     [userSlice.name]: userSlice.reducer,
-    [wsDataSlice.name]: wsDataSlice.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketMiddleware()),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketMiddleware(wsActions)),
   devTools: process.env.NODE_ENV !== 'production'
 });
 
+// Union type all app actions
+
+export type TAppActions =
+  TBurgerConstructorActions |
+  TBurgerIngredientsActions |
+  TOrderActions |
+  TOrderInfoActions |
+  TUserActions |
+  TSocketActions;
+
 export type RootState = ReturnType<typeof store.getState>;
+
 export type AppDispatch = typeof store.dispatch;
+
+/*
+export type AppDispatch = ThunkDispatch<RootState, never, TAppActions>;
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown, // never ??
+  TAppActions
+>
+*/

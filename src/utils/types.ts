@@ -93,3 +93,8 @@ export type TResponseOrders = {
   total?: number;
   totalToday?: number;
 };
+
+// createSlice type helper
+// https://app.pachca.com/chats/6399761?message=85113462
+
+export type SliceActions<T> = { [K in keyof T]: T[K] extends (...args: any[]) => infer A ? A : never; }[keyof T];

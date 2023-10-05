@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store-hooks';
 import { useDrop } from 'react-dnd';
 import { Button, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { addIngredient, getConstructorTotalPrice, getConstructorBun, getConstructorFilling } from '../../services/slices/burger-constructor';
-import { getUserUser } from '../../services/slices/user';
+import { getUser } from '../../services/slices/user';
 import { requestOrder } from '../../services/slices/order';
 import { emptyConstructor } from '../../services/slices/burger-constructor';
 import BurgerConstructorItem from './burger-constructor-item';
@@ -38,7 +38,7 @@ const BurgerConstructor: FC = () => {
   const [showOrderModal, setShowOrderModal] = useState(false);
 
   const navigate = useNavigate();
-  const user = useAppSelector(getUserUser);
+  const user = useAppSelector(getUser);
   const bun = useAppSelector(getConstructorBun);
   const filling = useAppSelector(getConstructorFilling);
   const price = useAppSelector(getConstructorTotalPrice);

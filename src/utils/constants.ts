@@ -28,5 +28,5 @@ export const FORGOT_PASSWORD_URL = '/forgot-password';
 export const RESET_PASSWORD_URL = '/reset-password';
 export const PROFILE_URL = '/profile';
 export const INGREDIENTS_DETAILS_URL = (id: string) => `/ingredients/${id}`;
-export const FEED_URL = (id: string) => `/feed/${id}`;
-export const PROFILE_ORDERS_URL = (id: string) => `/profile/orders/${id}`;
+export const FEED_URL = (number: string) => `/feed/${number}`;
+export const PROFILE_ORDERS_URL = (number: string) => `/profile/orders/${number}`;

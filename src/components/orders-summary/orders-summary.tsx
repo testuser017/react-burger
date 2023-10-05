@@ -13,7 +13,7 @@ const StatusList: FC<{ status: string, ordersNums: number[] }> = ({ status, orde
 );
 
 const OrdersSummary = () => {
-  const ordersData = useAppSelector((state) => state.wsData.data);
+  const ordersData = useAppSelector((state) => state.socket.data);
   if (!ordersData?.orders) return null;
 
   const { done, pending } = ordersData.orders.reduce((acc: {[key: string]: number[]}, item) => {

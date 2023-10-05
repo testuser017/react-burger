@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { TIngredient, TIngredientConstructor } from '../../utils/types';
+import { SliceActions, TIngredient, TIngredientConstructor } from '../../utils/types';
 import { RootState } from '../store';
 
 type TBurgerConstructorState = {
@@ -63,3 +63,5 @@ export const getConstructorFilling = (state: RootState) => state.burgerConstruct
 export const { addIngredient, delIngredient, moveIngredient, emptyConstructor } = burgerConstructorSlice.actions;
 
 export default burgerConstructorSlice.reducer;
+
+export type TBurgerConstructorActions = SliceActions<typeof burgerConstructorSlice.actions>;

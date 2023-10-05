@@ -17,15 +17,19 @@ const ResetPasswordPage = () => {
     !isResetEmailSent && navigate(FORGOT_PASSWORD_URL);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(resetPassword(
-      {
-        password: values.password,
-        token: values.token,
-      },
-      () => navigate(LOGIN_URL)
-    ));
+    try {
+      await dispatch(resetPassword(
+        {
+          password: values.password,
+          token: values.token,
+        }
+      )).unwrap();
+      navigate(LOGIN_URL);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

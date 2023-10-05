@@ -5,14 +5,14 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import { EmailInputMod } from '../../components/mod-inputs/email-input-mod';
 import { PasswordInputMod } from '../../components/mod-inputs/password-input-mod';
 import ProfilePageNav from './profile-nav';
-import { getUserUser, updateUser } from '../../services/slices/user';
+import { getUser, updateUser } from '../../services/slices/user';
 import styles from './profile.module.css';
 
 const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const { values, handleChange, errors, isValid, setValues } = useFormAndValidation();
 
-  const user = useAppSelector(getUserUser);
+  const user = useAppSelector(getUser);
 
   const handleFormReset = useCallback(() => {
     setValues({

@@ -4,7 +4,7 @@
 import { FC, ReactElement } from "react";
 import { useAppSelector } from "../../hooks/store-hooks";
 import { Navigate, useLocation } from "react-router-dom";
-import { getUserUser } from "../../services/slices/user";
+import { getUser } from "../../services/slices/user";
 import { LOGIN_URL } from "../../utils/constants";
 
 type Props = {
@@ -17,7 +17,7 @@ const Protected: FC<Props> = ({ onlyUnAuth = false, component }) => {
   // при этом результат этой проверки не имеет значения, важно только,
   // что сам факт проверки имел место.
   const isAuthChecked = useAppSelector((state) => state.user.isAuthChecked);
-  const user = useAppSelector(getUserUser);
+  const user = useAppSelector(getUser);
   const location = useLocation();
 
   if (!isAuthChecked) {

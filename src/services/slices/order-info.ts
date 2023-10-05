@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchOrderInfo } from '../../utils/api';
-import { TResponseOrders } from '../../utils/types';
+import { SliceActions, TResponseOrders } from '../../utils/types';
 
 type TOrderInfoState = {
   data: null | TResponseOrders;
@@ -41,3 +41,5 @@ export const orderInfoSlice = createSlice({
 export const { emptyOrderInfo } = orderInfoSlice.actions;
 
 export default orderInfoSlice.reducer;
+
+export type TOrderInfoActions = SliceActions<typeof orderInfoSlice.actions>;

@@ -12,14 +12,18 @@ const ForgotPasswordPage = () => {
   const navigate = useNavigate();
   const { values, handleChange, errors, isValid } = useFormAndValidation();
 
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(forgotPassword(
-      {
-        email: values.email
-      },
-      () => navigate(RESET_PASSWORD_URL)
-    ));
+    try {
+      await dispatch(forgotPassword(
+        {
+          email: values.email
+        }
+      )).unwrap();
+      navigate(RESET_PASSWORD_URL);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

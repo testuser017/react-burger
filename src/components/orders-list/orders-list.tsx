@@ -4,23 +4,24 @@ import { Link, useLocation, useMatch } from 'react-router-dom';
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrdersIngsPrice from './orders-list-ingredients-price';
 import { DICTIONARY, FEED_URL, PROFILE_ORDERS_URL, WS_URL_ORDERS } from '../../utils/constants';
+import { wsActions } from '../../services/slices/socket';
+import { getTokens } from '../../utils/tokens';
 import styles from './orders-list.module.css';
 
 const OrdersList = () => {
   const location = useLocation();
   const isProfilePage = useMatch(PROFILE_ORDERS_URL(''));
-  const orders = useAppSelector((state) => state.wsData.data?.orders);
+  const orders = useAppSelector((state) => state.socket.data?.orders);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken')?.replace('Bearer ', '');
     const wsUrl = isProfilePage
-      ? `${WS_URL_ORDERS}?token=${accessToken}`
+      ? `${WS_URL_ORDERS}?token=${getTokens(false).accessToken}`
       : `${WS_URL_ORDERS}/all`;
-    dispatch({ type: 'socket/connect', wsUrl });
+    dispatch({ type: wsActions.wsConnect, payload: wsUrl });
     return () => {
-      dispatch({ type: 'socket/disconnect' });
-      // TODO: empty state.wsData ??
+      dispatch({ type: wsActions.wsDisconnect });
+      // TODO: empty state.socket ??
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
