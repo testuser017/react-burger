@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/store-hooks';
 import { useDrag } from 'react-dnd';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { countItemsById } from '../../services/slices/burger-constructor';
+import { countConstructorItemsById } from '../../services/slices/burger-constructor';
 import Price from '../price/price';
 import styles from './burger-ingredients-item.module.css';
 import { INGREDIENTS_DETAILS_URL } from '../../utils/constants';
@@ -12,7 +12,7 @@ import { TIngredient } from '../../utils/types';
 const BurgerIngredientsItem: FC<{
   ingredientsItem: TIngredient
 }> = ({ ingredientsItem }) => {
-  const count = useAppSelector(countItemsById(ingredientsItem._id, ingredientsItem.type));
+  const count = useAppSelector(countConstructorItemsById(ingredientsItem._id));
   const location = useLocation();
 
   const [, dragRef] = useDrag({

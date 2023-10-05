@@ -1,12 +1,12 @@
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/store-hooks';
-import { getUserUser } from '../../services/slices/user';
+import { getUser } from '../../services/slices/user';
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { PROFILE_URL } from '../../utils/constants';
+import { FEED_URL, PROFILE_URL } from '../../utils/constants';
 import styles from './app-header.module.css';
 
 const AppHeader = () => {
-  const user = useAppSelector(getUserUser);
+  const user = useAppSelector(getUser);
 
   return (
     <header className={`${styles.header} pb-4 pt-4`}>
@@ -27,7 +27,7 @@ const AppHeader = () => {
 
           <li className={`${styles.navItem} mr-2`}>
             <NavLink
-              to='/TODO'
+              to={FEED_URL('')}
               className={`${styles.navLink} pl-5 pr-5 pb-4 pt-4 text text_type_main-default`}
             >{({ isActive }) => (
               <>

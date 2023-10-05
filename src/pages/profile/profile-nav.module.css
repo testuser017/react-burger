@@ -1,0 +1,29 @@
+.profileSidebar {
+  margin-top: calc(var(--offset-base-size) * 30);
+  width: 320px;
+}
+
+.profileNav {
+  list-style: none;
+}
+
+.profileNavLink {
+  color: var(--text-inactive-color);
+  display: block;
+  height: 64px;
+  line-height: 64px;
+}
+
+.profileNavLinkActive {
+  composes: profileNavLink;
+  color: var(--text-primary-color);
+}
+
+.profileNavButton {
+  composes: profileNavLink;
+  font-size: 24px;
+  font-weight: 700;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}

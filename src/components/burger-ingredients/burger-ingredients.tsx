@@ -1,11 +1,11 @@
 import { FC, forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { useAppSelector } from '../../hooks/store-hooks';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
+import BurgerIngredientsItem from './burger-ingredients-item';
 import { DICTIONARY } from '../../utils/constants';
 import styles from './burger-ingredients.module.css';
 import { TIngredient } from '../../utils/types';
-import { getIngredientsData } from '../../services/slices/burger-ingredients';
+import { getIngredients } from '../../services/slices/burger-ingredients';
 
 type Props = {
   ingredientsGroupName: string;
@@ -27,11 +27,11 @@ const BurgerIngredientsGroup = forwardRef<HTMLElement, Props>((props, ref) => {
 });
 
 const BurgerIngredients: FC = () => {
-  const dataList = useAppSelector(getIngredientsData);
+  const dataList = useAppSelector(getIngredients);
 
   const ingredientsTypes = useMemo<string[]>(
 //  () => [...new Set(dataList.map(x => x.type))], // ts 2802 downlevelIteration
-    () => [...Array.from(new Set(dataList.map(x => x.type)))],
+    () => Array.from(new Set(dataList.map(x => x.type))),
     [dataList]
   );
   const [currentTab, setCurrentTab] = useState(ingredientsTypes[0]);
@@ -67,7 +67,7 @@ const BurgerIngredients: FC = () => {
             active={currentTab === item}
             onClick={tabClickHandler}
           >
-            {DICTIONARY[item] ?? item}
+            {DICTIONARY(item)}
           </Tab>
         ))}
       </div>
@@ -76,7 +76,7 @@ const BurgerIngredients: FC = () => {
         {ingredientsTypes.map(item => (
           <BurgerIngredientsGroup
             key={item}
-            ingredientsGroupName={DICTIONARY[item] ?? item}
+            ingredientsGroupName={DICTIONARY(item)}
             ingredientsList={dataList.filter(el => el.type === item)}
             ref={el => ingredientsGroupsRefs.current[item] = el as HTMLElement}
           />

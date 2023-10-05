@@ -3,6 +3,10 @@
  body * { outline: 1px dotted rgba(255,0,255,.5); }
  */
 
+body {
+  font-family: 'Jet Brains Mono';
+}
+
 a {
   text-decoration: none;
 }
@@ -11,4 +15,22 @@ a {
   margin: calc(var(--offset-base-size) * 45) auto 0;
   text-align: center;
   width: 480px;
+}
+
+.main,
+.main-profile {
+  box-sizing: border-box;
+  display: flex;
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 0 calc(var(--offset-base-size) * 5);
+}
+
+.main {
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.main-profile {
+  column-gap: calc(var(--offset-base-size) * 15);
 }
