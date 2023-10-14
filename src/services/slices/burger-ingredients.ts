@@ -9,7 +9,7 @@ type TBurgerIngredientsState = {
   error: null | string | undefined;
 }
 
-const initialState: TBurgerIngredientsState = {
+export const initialState: TBurgerIngredientsState = {
   data: [],
   status: 'idle',
   error: null,
