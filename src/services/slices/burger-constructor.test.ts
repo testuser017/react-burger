@@ -6,6 +6,7 @@ import reducer, {
   emptyConstructor,
 } from './burger-constructor';
 import ingsMock from '../../mocks/ingredients.mock.json';
+/*
 import crypto from 'crypto';
 
 Object.defineProperty(global, 'crypto', {
@@ -13,7 +14,7 @@ Object.defineProperty(global, 'crypto', {
     randomUUID: () => crypto.randomUUID()
   }
 });
-
+*/
 describe('burgerIngredientsSlice', () => {
 
   it('initial state', () => {

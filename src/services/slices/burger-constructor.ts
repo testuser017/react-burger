@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit';
 import { SliceActions, TIngredient, TIngredientConstructor } from '../../utils/types';
 import { RootState } from '../store';
 
@@ -27,7 +27,8 @@ export const burgerConstructorSlice = createSlice({
         }
       },
       prepare: item => ({
-        payload: { ...item, uuid: crypto.randomUUID() }
+        // payload: { ...item, uuid: crypto.randomUUID() }
+        payload: { ...item, uuid: nanoid() }
       }),
     },
     delIngredient(state, action) {

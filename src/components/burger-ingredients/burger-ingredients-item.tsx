@@ -24,6 +24,7 @@ const BurgerIngredientsItem: FC<{
     <li
       className={styles.ingredientsItem}
       ref={dragRef}
+      data-testid={ingredientsItem.type}
     >
       <Link
         className={styles.ingredientsItemLink}
