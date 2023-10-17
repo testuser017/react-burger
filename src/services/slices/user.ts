@@ -23,10 +23,6 @@ export const checkUserAuth = () => {
   return (dispatch = useAppDispatch()) => {
     if (getTokens().accessToken) {
       dispatch(fetchUser())
-        .catch(() => {
-           delTokens();
-           dispatch(setUser(null));
-         })
         .finally(() => dispatch(setAuthChecked(true)));
     } else {
       dispatch(setAuthChecked(true));
@@ -83,14 +79,15 @@ export const userSlice = createSlice({
     setAuthChecked: (state, action: PayloadAction<TUserState['isAuthChecked']>) => {
       state.isAuthChecked = action.payload;
     },
-    setUser: (state, action: PayloadAction<TUserState['user']>) => {
-      state.user = action.payload;
-    },
   },
   extraReducers(builder) {
     builder
     .addCase(fetchUser.fulfilled, (state, action) => {
       state.user = action.payload.user;
+    })
+    .addCase(fetchUser.rejected, (state) => {
+      state.user = null;
+      delTokens();
     })
     .addCase(register.fulfilled, (state, action) => {
       state.user = action.payload.user;
@@ -131,7 +128,7 @@ export const userSlice = createSlice({
 
 export const getUser = (state: RootState) => state.user.user;
 
-export const { setAuthChecked, setUser } = userSlice.actions;
+export const { setAuthChecked } = userSlice.actions;
 
 export default userSlice.reducer;
 

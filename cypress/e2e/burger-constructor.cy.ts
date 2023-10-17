@@ -38,6 +38,9 @@ describe('burger-constructor', () => {
     cy.get('button[type="submit"]').click();
     setTokens(user);
 
+    // alternative way for set `user` to `store`
+    // https://www.cypress.io/blog/2018/11/14/testing-redux-store#dispatch-actions
+
     // order
     cy.get('[data-testid="buttonOrder"]').click();
     cy.get('[data-testid="orderNumber"]').should('have.text', order.order.number);

@@ -1,7 +1,6 @@
 import reducer, {
   initialState,
   setAuthChecked,
-  setUser,
   fetchUser,
   register,
   logout,
@@ -29,16 +28,27 @@ describe('userSlice', () => {
     expect(result).toEqual({ ...initialState, isAuthChecked: true });
   });
 
-  it('setUser', () => {
-    const action = setUser(user.user);
-    const result = reducer(initialState, action);
-    expect(result).toEqual({ ...initialState, user: user.user });
-  });
-
   it('fetchUser.fulfilled', () => {
     const action = { type: fetchUser.fulfilled.type, payload: user };
     const result = reducer(initialState, action);
     expect(result).toEqual({ ...initialState, status: 'succeeded', user: user.user });
+  });
+
+  it('fetchUser.rejected', () => {
+    const action = { type: fetchUser.rejected.type, error: { message: 'error' } };
+    const result = reducer({
+      ...initialState,
+      status: 'succeeded',
+      isAuthChecked: true,
+      user: user.user,
+    }, action);
+    expect(result).toEqual({
+      ...initialState,
+      status: 'failed',
+      isAuthChecked: true,
+      user: null,
+      error: 'error',
+    });
   });
 
   it('register.fulfilled', () => { // login.fulfilled is identical

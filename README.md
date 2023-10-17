@@ -1,5 +1,3 @@
-# http://f0874610.xsph.ru/
-
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

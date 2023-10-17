@@ -1,3 +1,4 @@
+Header always set X-Robots-Tag "none"
 ServerSignature Off
 Options -Indexes
 RewriteEngine On
