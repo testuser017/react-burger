@@ -5,7 +5,7 @@ type TSocketState = {
   data: null | TResponseOrders;
 };
 
-const initialState: TSocketState = {
+export const initialState: TSocketState = {
   data: null,
 };
 
@@ -42,8 +42,8 @@ export type TWsActions = {
 export const wsActions: TWsActions = {
   wsConnect: '_WS_CONNECT',
   wsDisconnect: '_WS_DISCONNECT',
-  wsOnOpen: 'socket/wsStub',
-  wsOnError: 'socket/wsStub',
-  wsOnMessage: 'socket/setData',
-  wsOnClose: 'socket/wsStub',
+  wsOnOpen: `${socketSlice.name}/wsStub`,
+  wsOnError: `${socketSlice.name}/wsStub`,
+  wsOnMessage: `${socketSlice.name}/setData`,
+  wsOnClose: `${socketSlice.name}/wsStub`,
 };

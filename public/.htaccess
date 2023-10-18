@@ -1,0 +1,7 @@
+Header always set X-Robots-Tag "none"
+ServerSignature Off
+Options -Indexes
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* index.html

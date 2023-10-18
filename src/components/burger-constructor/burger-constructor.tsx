@@ -78,7 +78,11 @@ const BurgerConstructor: FC = () => {
 
   return (
     <>
-      <section className={`${styles.burgerConstructor} ${isHover && styles.burgerConstructorDndHover} pt-25 pl-4`} ref={dropRef}>
+      <section
+        className={`${styles.burgerConstructor} ${isHover && styles.burgerConstructorDndHover} pt-25 pl-4`}
+        ref={dropRef}
+        data-testid="dropZone"
+      >
         {bun && <BurgerConstructorBun bun={bun} type='top' />}
         <section className={`${styles.burgerConstructorWrap} custom-scroll`}>
           {filling.map((item, index) => {
@@ -94,6 +98,7 @@ const BurgerConstructor: FC = () => {
             size="large"
             onClick={handleOrderClick}
             disabled={!bun}
+            data-testid="buttonOrder"
           >
             Оформить заказ
           </Button>

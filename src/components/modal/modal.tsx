@@ -30,6 +30,7 @@ const Modal: FC<PropsWithChildren<{ hideModal: () => void }>> = ({ hideModal, ch
             type="secondary"
             className={styles.modalButtonClose}
             onClick={hideModal}
+            data-testid="closeModal"
           >
             <CloseIcon type="primary" />
           </Button>
